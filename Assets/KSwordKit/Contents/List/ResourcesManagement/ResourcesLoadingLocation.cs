@@ -40,7 +40,13 @@ namespace KSwordKit.Contents.ResourcesManagement
         /// <para>经过 Resources、StreamingAssets的不断地调试测试，再由Remote进行测试之后，发布版本基本没问题了。</para>
         /// <para>这种方式用于发布版。</para>
         /// </summary>
-        RemotePath
+        RemotePath,
+        /// <summary>
+        /// 本地的测试远程资源，使用前，配合框架提供的测试服务器程序，需要通过 UnityWebRequest 网络下载到本地，然后再加载
+        /// <para>经过 Resources、StreamingAssets的不断地调试测试，再由Remote进行测试之后，发布版本基本没问题了。</para>
+        /// <para>这种方式用于测试版。</para>
+        /// </summary>
+        LocalTestRemotePath
     }
 }
 

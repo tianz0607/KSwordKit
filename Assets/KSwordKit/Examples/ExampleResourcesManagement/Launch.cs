@@ -116,7 +116,6 @@ public class Launch : MonoBehaviour
                         string sceneName = null;
                         go.GetComponent<Button>().onClick.AddListener(() =>
                         {
-
                             rmi.LoadSceneAsync(Assets.KSwordKit.Examples.ExampleResourcesManagement.Test_unity.Path, (_sceneName) =>
                             {
                                 sceneName = _sceneName;

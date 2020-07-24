@@ -91,7 +91,11 @@ namespace KSwordKit.Contents.ResourcesManagement
             // 资源包对象须存在
             if (_ResourcePackage == null)
             {
-                asyncAction(true, 1, ResourcesManager.KSwordKitName + ": 请先调用 SetResourcePackage 方法设置资源包", null);
+                if (asyncAction != null)
+                {
+                    asyncAction(false, 1, null, null);
+                    ResourcesManager.NextFrame(() => asyncAction(true, 1, ResourcesManager.KSwordKitName + ": 请先调用 SetResourcePackage 方法设置资源包", null));
+                }
                 return;
             }
             // 检查缓存内容, 缓存中存在时，加载缓存中的资源
@@ -110,7 +114,78 @@ namespace KSwordKit.Contents.ResourcesManagement
             {
                 // 使用 Resources.LoadAsync
                 case ResourcesLoadingLocation.Resources:
-                    _loadResourcesByResources(assetPath, asyncAction);
+                    
+                    if (ResourcesManager.Instance.ResourceObjectPath_ResourceObjectDic.ContainsKey(assetPath))
+                    {
+                        var ro = ResourcesManager.Instance.ResourceObjectPath_ResourceObjectDic[assetPath];
+                        var rm = ResourcesManager.Instance.AssetbundleName_AssetBundlePathDic[ro.AssetBundleName];
+
+                        float _progress = 0;
+                        if (ro.IsScene && !isLoadScene)
+                        {
+                            asyncAction(false, 1, null, null);
+                            ResourcesManager.NextFrame(
+                                () => asyncAction(
+                                    true,
+                                    1,
+                                    ResourcesManager.KSwordKitName + ": 资源加载失败! 该资源是场景资源，但是请求加载非场景资源，因此无法加载! 请使用 `KSwordKit.Contents.ResourcesManagement.ResourcesManager.LoadSceneAsync` 相关的API再次尝试。\n参数 assetPath=" + assetPath,
+                                    null
+                                )
+                            );
+                            return;
+                        }
+                        if (ro.IsScene && isLoadScene)
+                        {
+                            if (!_TypeIsSceneInfo)
+                            {
+                                Debug.LogWarning(ResourcesManager.KSwordKitName + ": 应当提供类型 `KSwordKit.Contents.ResourcesManagement.SceneInfo`；当前操作将以默认方式继续加载。");
+                            }
+                            T _sceneinfo = null;
+                            bool isset__sceneinfo = false;
+                            _loader.StartCoroutine(ro.AsyncLoadScene(assetPath, sceneAsyncRequestFunc, (isdone, progress, error, sceneinfo) =>
+                            {
+                                if (isdone)
+                                {
+                                    asyncAction(isdone, progress, error, _sceneinfo);
+                                    return;
+                                }
+
+                                if (!isset__sceneinfo)
+                                {
+                                    isset__sceneinfo = true;
+                                    if (_TypeIsSceneInfo) // 只有在泛型类型为 SceneInfo 时，在回调中的参数 `SceneInfo` 数据才有效。
+                                        _sceneinfo = sceneinfo as T;
+                                }
+
+                                asyncAction(isdone, progress, error, _sceneinfo);
+                            }));
+                            return;
+                        }
+                        if (!ro.IsScene && isLoadScene)
+                        {
+                            asyncAction(false, 1, null, null);
+                            ResourcesManager.NextFrame(
+                                () => asyncAction(
+                                    true,
+                                    1,
+                                    ResourcesManager.KSwordKitName + ": 资源加载失败! 该资源不是场景资源，但是请求加载场景资源，因此无法加载! 请使用 `KSwordKit.Contents.ResourcesManagement.ResourcesManager.LoadAssetAsync` 相关的API再次尝试。\n参数 assetPath=" + assetPath,
+                                    null
+                                )
+                            );
+                            return;
+                        }
+
+                        _loadResourcesByResources(assetPath, asyncAction);
+                    }
+                    else
+                    {
+                        if (asyncAction != null)
+                        {
+                            asyncAction(false, 1, null, null);
+                            ResourcesManager.NextFrame(() => asyncAction(true, 1, ResourcesManager.KSwordKitName + ": 资源不存在！请检查参数 assetPath 是否正确，assetPath=" + assetPath, null));
+                        }
+                    }
+
                     break;
                 // 其他路径下都使用同样的办法加载资源
                 // 加载器只处理本地资源
