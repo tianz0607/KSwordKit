@@ -1,11 +1,8 @@
 {
     "Name":"xLua",
-    "FileSettingList":[
-        {
-            "IsDir":true,
-            "Path":"Tools",
-            "ImportPath":"Tools",
-            "ExamplePath":"ExamplesXLua"
-        }
-    ]
+    "Dependencies":[],
+    "ExampleFolderPaths":[
+        "ExamplesXLua"
+    ],
+    "FileSettings":[]
 }

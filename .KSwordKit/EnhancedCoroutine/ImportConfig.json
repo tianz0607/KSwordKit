@@ -1,11 +1,8 @@
-{
+{    
     "Name":"EnhancedCoroutine",
-    "FileSettingList":[
-        {
-            "IsDir":false,
-            "Path":"",
-            "ImportPath":"",
-            "ExamplePath":"ExamplesEnhancedCoroutine"
-        }
-    ]
+    "Dependencies":[],
+    "ExampleFolderPaths":[
+	"ExamplesEnhancedCoroutine"
+    ],
+    "FileSettings":[]
 }

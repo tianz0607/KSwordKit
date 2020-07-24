@@ -1,4 +1,6 @@
 {
     "Name":"Timer",
-    "FileSettingList":[]
+    "Dependencies":[],
+    "ExampleFolderPaths":[],
+    "FileSettings":[]
 }

@@ -1,4 +1,6 @@
 {
     "Name":"ProjectFileManagement",
-    "FileSettingList":[]
+    "Dependencies":[],
+    "ExampleFolderPaths":[],
+    "FileSettings":[]
 }

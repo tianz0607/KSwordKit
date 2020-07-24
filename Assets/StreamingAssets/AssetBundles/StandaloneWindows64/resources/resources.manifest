@@ -1,0 +1,29 @@
+ManifestFileVersion: 0
+CRC: 1268754154
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: "kswordkit/examples/exampleresourcesmanagement/resources/texture/\u6309\u94AE/\u6309\u94AE"
+      Dependencies: {}
+    Info_1:
+      Name: "kswordkit/examples/exampleresourcesmanagement/resources/texture/\u4E2A\u4EBA\u4FE1\u606F/\u4E2A\u4EBA\u4FE1\u606F"
+      Dependencies: {}
+    Info_2:
+      Name: "kswordkit/examples/exampleresourcesmanagement/resources/texture/\u8FDB\u5EA6\u6761/\u8FDB\u5EA6\u6761"
+      Dependencies: {}
+    Info_3:
+      Name: "kswordkit/examples/exampleresourcesmanagement/resources/texture/\u80CC\u666F/\u80CC\u666F"
+      Dependencies: {}
+    Info_4:
+      Name: kswordkit/examples/exampleresourcesmanagement/resources/prefabs/prefabs
+      Dependencies:
+        Dependency_0: "kswordkit/examples/exampleresourcesmanagement/resources/texture/\u6309\u94AE/\u6309\u94AE"
+    Info_5:
+      Name: kswordkit/examples/exampleresourcesmanagement/test3_unity
+      Dependencies: {}
+    Info_6:
+      Name: kswordkit/examples/exampleresourcesmanagement/test_unity
+      Dependencies: {}
+    Info_7:
+      Name: kswordkit/examples/exampleresourcesmanagement/test2_unity
+      Dependencies: {}

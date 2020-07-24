@@ -155,11 +155,10 @@ namespace KSwordKit.Contents.Editor
                 EditorGUILayout.LabelField(filesettings);
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.BeginVertical();
+                bool exportSuccess = false;
                 if (GUILayout.Button("导出新部件"))
                 {
-                    string error;
-                    ExportNewComponent(newComponentPath, out error);
-                    EditorUtility.DisplayDialog("导出新部件 '" + config.Name + "' ", string.IsNullOrEmpty(error) ? "成功！":"失败："+ error , "确定");
+                    exportSuccess = ExportNewComponent(config, newComponentPath);
                 }
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.Space(10);
@@ -167,12 +166,58 @@ namespace KSwordKit.Contents.Editor
             }
         }
 
-        void ExportNewComponent(string importConfigPath, out string error)
+        bool ExportNewComponent(ImportConfig importConfig, string importConfigPath)
         {
+            var _dirinfo = new System.IO.DirectoryInfo(KSwordKitConst.KSwordKitContentsSourceDiretory);
+            var _names = new List<string>();
+            foreach(var dir in _dirinfo.GetDirectories())
+            {
+                var config = JsonUtility.FromJson<ImportConfig>(System.IO.File.ReadAllText(System.IO.Path.Combine(dir.FullName, ContentsEditor.ImportConfigFileName)));
+                _names.Add(config.Name);
+                if(config.Name == importConfig.Name)
+                {
+                    EditorUtility.DisplayDialog("导出新部件 '" + importConfig.Name + "' ", "失败：部件名称冲突，请使用其他名称重试！", "确定");
+                    return false;
+                }
+            }
+
+            foreach(var name in importConfig.Dependencies)
+            {
+                if (!_names.Contains(name))
+                {
+                    if(EditorUtility.DisplayDialog("导出新部件 '" + importConfig.Name + "' ", "依赖项 `" + name + "` 在当前框架中不存在，请更新框架或修改配置。", "更新框架", "修改配置"))
+                    {
+                        Application.OpenURL("https://github.com/keenlovelife/KSwordKit.git");
+                    }
+                    return false;
+                }
+            }
+
+            var importConfigDirinfo = new System.IO.FileInfo(importConfigPath).Directory;
+            foreach(var filesetting in importConfig.FileSettings)
+            {
+                bool isError = false;
+                if (filesetting.IsDir)
+                {
+                    if (!System.IO.Directory.Exists(System.IO.Path.Combine(importConfigDirinfo.FullName, filesetting.Path)))
+                        isError = true;
+                }
+                else
+                {
+                    if (!System.IO.File.Exists(System.IO.Path.Combine(importConfigDirinfo.FullName, filesetting.Path)))
+                        isError = true;
+                }
+                if (isError)
+                {
+                    EditorUtility.DisplayDialog("导出新部件 '" + importConfig.Name + "' ", "特殊文件配置出错: \nFileSettings项中 `Path: " + filesetting.Path +"` 并不是一个真实的" + (filesetting.IsDir?"文件夹":"文件") + "\n\n请修改配置。", "确定");
+                    return false;
+                }
+            }
+
             var dirinfo = new System.IO.FileInfo(newComponentPath).Directory;
-
-
-            error = null;
+            var error = importConfig.Export(dirinfo.FullName, System.IO.Path.Combine(KSwordKitConst.KSwordKitContentsSourceDiretory, importConfig.Name), importConfigPath);
+            EditorUtility.DisplayDialog("导出新部件 '" + importConfig.Name + "' ", string.IsNullOrEmpty(error) ? "导出成功！" : "导出失败：" + error, "确定");
+            return string.IsNullOrEmpty(error);
         }
 
     }
