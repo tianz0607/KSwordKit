@@ -10,6 +10,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -69,7 +71,25 @@ namespace KSwordKit.Contents.ResourcesManagement
             get { return _ResourcePackage; }
 			set { _ResourcePackage = value; }
 		}
+        static string[] getDependencies(string[] assetPaths)
+        {
+            List<string> d = new List<string>();
+            foreach(var path in assetPaths)
+            {
+                if (ResourcesManager.Instance.ResourceObjectPath_ResourceObjectDic.ContainsKey(path))
+                {
+                    var ro = ResourcesManager.Instance.ResourceObjectPath_ResourceObjectDic[path];
+                    var _d = ResourcesManager.Instance.AssetbundleName_AssetBundlePathDic[ro.AssetBundleName];
+                    foreach(var abname in _d.Dependencies)
+                    {
+                        if (!d.Contains(abname))
+                            d.Add(abname);
+                    }
+                }
+            }
 
+            return d.ToArray();
+        }
         static void loadAsync(string assetPath, ResourcesLoadingLocation resourcesLoadingLocation, bool isLoadScene, Func<string, AsyncOperation> sceneAsyncRequestFunc, System.Action<bool, float, string, T> asyncAction)
         {
             // 总共需要3步
@@ -308,48 +328,70 @@ namespace KSwordKit.Contents.ResourcesManagement
                 ResourcesManager.NextFrame(() => asyncAction(true, 1, ResourcesManager.KSwordKitName + ": 加载失败！视图加载异步，但是提供的场景异步请求回调数量和输入的场景资源路径数量不一致。\n请检查参数 `assetPaths` 和参数 `scnenAsyncRequestFuncs`。\n如不明白该API含义，请查阅相关文档。", null));
                 return;
             }
+            // 加载资源的回调
+            System.Action loadAssetAction = () => {
+                int c = assetPaths.Length;
+                int cc = 0;
+                string error = null;
+                var objs = new T[c];
+                var _progress = 0f;
+                for (var i = 0; i < c; i++)
+                {
+                    var index = i;
+                    loadAsync(assetPaths[i], resourcesLoadingLocation, isLoadScene, isLoadScene ? sceneAsyncRequestFuncs[i] : null, (isdone, progress, _error, obj) => {
 
-            int c = assetPaths.Length;
-            int cc = 0;
-            string error = null;
-            var objs = new T[c];
-            var _progress = 0f;
-            for (var i = 0; i < c; i++)
-            {
-                var index = i;
-                loadAsync(assetPaths[i], resourcesLoadingLocation, isLoadScene, isLoadScene? sceneAsyncRequestFuncs[i] : null, (isdone, progress, _error, obj) => {
-
-                    if (isdone)
-                    {
-                        cc++;
-                        objs[index] = obj;
-                        if (!string.IsNullOrEmpty(_error))
+                        if (isdone)
                         {
-                            if (string.IsNullOrEmpty(error))
-                                error = _error;
-                            else
-                                error += "\n" + _error;
-                        }
-
-                        if (c == cc)
-                        {
-                            if (_progress == 1f)
-                                asyncAction(true, 1, error, objs);
-                            else
+                            cc++;
+                            objs[index] = obj;
+                            if (!string.IsNullOrEmpty(_error))
                             {
-                                asyncAction(false, 1, null, null);
-                                ResourcesManager.NextFrame(() => {
-                                    asyncAction(true, 1, error, objs);
-                                });
+                                if (string.IsNullOrEmpty(error))
+                                    error = _error;
+                                else
+                                    error += "\n" + _error;
                             }
-                        }
-                        return;
-                    }
 
-                    _progress = (float)cc / c + 1f / (float)c * progress;
-                    asyncAction(false, _progress, null, null);
-                });
-            }
+                            if (c == cc)
+                            {
+                                if (_progress == 1f)
+                                    asyncAction(true, 1, error, objs);
+                                else
+                                {
+                                    asyncAction(false, 1, null, null);
+                                    ResourcesManager.NextFrame(() => {
+                                        asyncAction(true, 1, error, objs);
+                                    });
+                                }
+                            }
+                            return;
+                        }
+
+                        _progress = (float)cc / c + 1f / (float)c * progress;
+                        _progress = 0.5f + 0.5f * _progress;
+                        asyncAction(false, _progress, null, null);
+                    });
+                }
+            };
+            // 加载依赖
+            LoadDependencies(getDependencies(assetPaths), (isdone, progress, error) => {
+                if (isdone)
+                {
+                    if (string.IsNullOrEmpty(error))
+                    {
+                        loadAssetAction();
+                    }
+                    else
+                    {
+                        asyncAction(true, 1, error, null);
+                    }
+                    return;
+                }
+                if(asyncAction != null)
+                {
+                    asyncAction(false, 0.5f * progress, error, null);
+                }
+            });
         }
         static void _loadResourcesByResources(string assetPath, System.Action<bool, float, string, T> asyncAction)
         {
@@ -460,6 +502,80 @@ namespace KSwordKit.Contents.ResourcesManagement
         public static void LoadSceneAsync(string[] assetPaths, ResourcesLoadingLocation resourcesLoadingLocation, Func<string, AsyncOperation>[] scnenAsyncRequestFuncs, System.Action<bool, float, string, T[]> asyncAction)
         {
             loadAsync(assetPaths, resourcesLoadingLocation, true, scnenAsyncRequestFuncs, asyncAction);
+        }
+        /// <summary>
+        /// 加载依赖
+        /// </summary>
+        /// <param name="assetBundleDependencies"></param>
+        /// <param name="asyncAction"></param>
+        public static void LoadDependencies(string[] assetBundleDependencies, System.Action<bool, float, string> asyncAction)
+        {
+            // 资源包对象须存在
+            if (_ResourcePackage == null)
+            {
+                if (asyncAction != null)
+                {
+                    asyncAction(false, 1, null);
+                    ResourcesManager.NextFrame(() => asyncAction(true, 1, ResourcesManager.KSwordKitName + ": 请先调用 SetResourcePackage 方法设置资源包"));
+                }
+                return;
+            }
+            var maxc = assetBundleDependencies.Length;
+            if(maxc == 0)
+            {
+                if (asyncAction != null)
+                {
+                    asyncAction(false, 1, null);
+                    ResourcesManager.NextFrame(() => asyncAction(true, 1, null));
+                }
+                return;
+            }
+            var currc = 0;
+            string error = string.Empty;
+            // 检测是否加载完成
+            System.Action doneAction = () => { 
+                if(maxc == currc)
+                {
+                    ResourcesManager.NextFrame(() => asyncAction(true, 1, string.IsNullOrEmpty(error) ? null: error));
+                }
+            };
+            for(var i = 0; i < maxc; i++)
+            {
+                var abname = assetBundleDependencies[i];
+                if (ResourcesManager.Instance.AssetbundleName_AssetBundlePathDic.ContainsKey(abname))
+                {
+                    var rm = ResourcesManager.Instance.AssetbundleName_AssetBundlePathDic[abname];
+                    if(rm.AssetBundle == null)
+                    {
+                        rm.AsyncLoad((isdone, progress, _error, ab) => {
+                            if (isdone)
+                            {
+                                currc++;
+                                if (!string.IsNullOrEmpty(_error))
+                                {
+                                    error += "\n" + _error;
+                                }
+                                doneAction();
+                                return;
+                            }
+                            asyncAction(false, (float)currc / maxc + (float)1 / maxc * progress, null);
+                        });
+                    }
+                    else
+                    {
+                        currc++;
+                        asyncAction(false, (float)currc / maxc, null);
+                        doneAction();
+                    }
+                }
+                else
+                {
+                    currc++;
+                    error += "\n加载资源失败！AssetBundleName '" + abname + "' 不存在。";
+                    asyncAction(false, (float)currc/maxc, null);
+                    doneAction();
+                }
+            }
         }
     }
 }

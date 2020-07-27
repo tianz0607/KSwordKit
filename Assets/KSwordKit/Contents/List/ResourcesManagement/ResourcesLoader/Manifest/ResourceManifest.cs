@@ -145,7 +145,7 @@ namespace KSwordKit.Contents.ResourcesManagement
                         cc++;
                         return;
                     }
-                    LoadingStatusEvent(false, 0.5f * (cc / dc +  (1 / dc) * progress), null, null);
+                    LoadingStatusEvent(false, 0.5f * (cc / dc + (1 / dc) * progress), null, null);
                 });
             }
             // 等待所有依赖加载完毕
@@ -190,19 +190,19 @@ namespace KSwordKit.Contents.ResourcesManagement
                     }
                     else
                     {
-                        error = ResourcesManager.KSwordKitName + ": 获取资源包失败！\nassetBunbleName=" + AssetBundleName + "\nAssetBundlePath=" + AssetBundlePath + "\nurl=" + unityWebRequest.url;
+                        error = ResourcesManager.KSwordKitName + ": 加载资源包失败！\nassetBunbleName=" + AssetBundleName + "\nAssetBundlePath=" + AssetBundlePath + "\nurl=" + unityWebRequest.url;
                         LoadingStatusEvent(true, 1, error, null);
                     }
                 }
                 catch (System.Exception e)
                 {
-                    error = ResourcesManager.KSwordKitName + ": 获取资源包失败！" + e.Message + "\nassetBunbleName=" + AssetBundleName + "\nAssetBundlePath=" + AssetBundlePath + "\nurl=" + unityWebRequest.url;
+                    error = ResourcesManager.KSwordKitName + ": 加载资源包失败！" + e.Message + "\nassetBunbleName=" + AssetBundleName + "\nAssetBundlePath=" + AssetBundlePath + "\nurl=" + unityWebRequest.url;
                     LoadingStatusEvent(true, 1, error, null);
                 }
             }
             else
             {
-                error = ResourcesManager.KSwordKitName + ": 获取资源包失败！" + unityWebRequest.error + "\nassetBunbleName=" + AssetBundleName + "\nAssetBundlePath=" + AssetBundlePath + "\nurl=" + unityWebRequest.url;
+                error = ResourcesManager.KSwordKitName + ": 加载资源包失败！" + unityWebRequest.error + "\nassetBunbleName=" + AssetBundleName + "\nAssetBundlePath=" + AssetBundlePath + "\nurl=" + unityWebRequest.url;
                 LoadingStatusEvent(true, 1, error, null);
             }
 

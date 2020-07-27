@@ -539,6 +539,10 @@ namespace KSwordKit.Contents.ResourcesManagement
         {
             return System.IO.Path.Combine(GetResourcesFileRootDirectory(), ResourcesFileName);
         }
+        /// <summary>
+        /// 是否需要添加本地文件路径的前缀 'file://'
+        /// </summary>
+        /// <returns></returns>
         public bool IsNeedAddLocalFilePathPrefix(){
             return (!Application.isEditor && Application.platform == RuntimePlatform.IPhonePlayer) || 
                 Application.platform == RuntimePlatform.OSXEditor;
@@ -573,7 +577,6 @@ namespace KSwordKit.Contents.ResourcesManagement
             }
             return path;
         }
-
         /// <summary>
         /// 异步加载资源
         /// <para>即便 ResourcesLoadingLocation == ResourcesLoadingLocation.Resources, 参数 <paramref name="assetPath"/> 也需要输入资源在项目中的相对路径</para>
@@ -655,6 +658,19 @@ namespace KSwordKit.Contents.ResourcesManagement
             return this;
         }
 
+        public ResourcesManager LoadDependencies(string[] assetBundleDependencies, System.Action<bool,float,string> asyncAction)
+        {
+            ResourcesAsyncLoader<AssetBundle>.ResourcePackage = ResourcePackage;
+            ResourcesAsyncLoader<AssetBundle>.LoadDependencies(assetBundleDependencies, (isdone, progress, error) => {
+                if (asyncAction != null)
+                    asyncAction(isdone, progress, error);
+            });
+            return this;
+        }
+        /// <summary>
+        /// 下一帧执行某动作
+        /// </summary>
+        /// <param name="action"></param>
         public static void NextFrame(System.Action action)
         {
             Instance.StartCoroutine(_ThreadWaitForNextFrame(action));
@@ -664,6 +680,11 @@ namespace KSwordKit.Contents.ResourcesManagement
             yield return null;
             action();
         }
+        /// <summary>
+        /// 直到 <paramref name="conditionFunc"/>为假，才执行某动作；否在下一帧再次检查是否为假。 
+        /// </summary>
+        /// <param name="conditionFunc"></param>
+        /// <param name="action"></param>
         public void WaitWhile(Func<bool> conditionFunc, System.Action action)
         {
             if (conditionFunc())
