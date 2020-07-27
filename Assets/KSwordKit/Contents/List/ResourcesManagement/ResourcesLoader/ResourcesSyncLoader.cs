@@ -16,7 +16,7 @@ namespace KSwordKit.Contents.ResourcesManagement
 	/// <summary>
 	/// 同步加载资源加载器
 	/// </summary>
-	public class ResourcesSyncLoader : IResourcesSyncLoader
+	public class ResourcesSyncLoader : MonoBehaviour
 	{
 		const string KSwordKitName = "KSwordKit";
 
@@ -94,26 +94,6 @@ namespace KSwordKit.Contents.ResourcesManagement
 			return null;
 		}
 		/// <summary>
-		/// 给定的路径（文件夹或文件）中同步加载所有资源
-		/// </summary>
-		/// <param name="assetPaths">给定的资源路径（文件夹或文件）</param>
-		/// <returns>返回有效资源; 如果全部加载失败，则返回空数组</returns>
-		public UnityEngine.Object[] LoadAll(string assetPath)
-		{
-			return null;
-		}
-		/// <summary>
-		/// 给定的路径（文件夹或文件）中同步加载所有资源
-		/// </summary>
-		/// <param name="assetPaths">给定的资源路径（文件夹或文件）</param>
-		/// <param name="error">加载错误时，输出错误信息</param>
-		/// <returns>返回有效资源; 如果全部加载失败，则返回空数组</returns>
-		public UnityEngine.Object[] LoadAll(string assetPath, out string error)
-		{
-			error = null;
-			return null;
-		}
-		/// <summary>
 		/// 根据指定路径同步加载指定类型T的资源
 		/// </summary>
 		/// <typeparam name="T">标识要加载资源的类型</typeparam>
@@ -137,27 +117,6 @@ namespace KSwordKit.Contents.ResourcesManagement
 
 			return null;
 		}
-		/// <summary>
-		/// 给定的路径（文件夹或文件）中同步加载所有资源
-		/// </summary>
-		/// <param name="assetPaths">给定的资源路径（文件夹或文件）</param>
-		/// <returns>返回有效资源; 如果全部加载失败，则返回空数组</returns>
-		public T[] LoadAll<T>(string asstPath) where T : UnityEngine.Object
-		{
-			return null;
-		}
-		/// <summary>
-		/// 给定的路径（文件夹或文件）中同步加载所有资源
-		/// </summary>
-		/// <typeparam name="T">将加载资源的类型</typeparam>
-		/// <param name="assetPath">资源路径</param>
-		/// <param name="error">加载出错时，输出错误信息</param>
-		/// <returns>返回有效资源; 如果全部加载失败，则返回空数组</returns>
-		public T[] LoadAll<T>(string assetPath, out string error) where T : UnityEngine.Object
-		{
-			error = null;
 
-			return null;
-		}
 	}
 }

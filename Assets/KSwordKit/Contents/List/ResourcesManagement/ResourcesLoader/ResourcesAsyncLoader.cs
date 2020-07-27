@@ -48,17 +48,6 @@ namespace KSwordKit.Contents.ResourcesManagement
 		/// AssetBundle 缓冲字典
 		/// </summary>
 		public static Dictionary<string, AssetBundle> CacheAssetBunbleDic { get { return _CacheAssetBunbleDic; } }
-
-		//static Dictionary<string, LoadingAssetBundle> _CacheLoadingAssetBundleDic = new Dictionary<string, LoadingAssetBundle>();
-		///// <summary>
-		///// 正在加载 AssetBundle 的缓冲字典
-		///// </summary>
-		//public static Dictionary<string, LoadingAssetBundle> CacheLoadingAssetBundleDic { get { return _CacheLoadingAssetBundleDic; } }
-  //      static Dictionary<string, LoadingAssetBundle> _CacheLoadingAssetBundleRequestDic = new Dictionary<string, LoadingAssetBundle>();
-  //      /// <summary>
-  //      /// 正在加载 AssetBundleRequest 的缓冲字典
-  //      /// </summary>
-  //      public static Dictionary<string, LoadingAssetBundle> CacheLoadingAssetBundleRequestDic { get { return _CacheLoadingAssetBundleRequestDic; } }
         private static int _timeoutIfCanBeApplied;
 		/// <summary>
 		/// 如果能被应用的话，设置或获取超时时间
@@ -109,36 +98,47 @@ namespace KSwordKit.Contents.ResourcesManagement
 
                 return;
             }
-            // 根据资源加载位置的不同采取不同的加载策略
-            switch (resourcesLoadingLocation)
+            // 检查资源是否存在
+            if (ResourcesManager.Instance.ResourceObjectPath_ResourceObjectDic.ContainsKey(assetPath))
             {
-                // 使用 Resources.LoadAsync
-                case ResourcesLoadingLocation.Resources:
-                    
-                    if (ResourcesManager.Instance.ResourceObjectPath_ResourceObjectDic.ContainsKey(assetPath))
-                    {
-                        var ro = ResourcesManager.Instance.ResourceObjectPath_ResourceObjectDic[assetPath];
-                        var rm = ResourcesManager.Instance.AssetbundleName_AssetBundlePathDic[ro.AssetBundleName];
-
-                        float _progress = 0;
-                        if (ro.IsScene && !isLoadScene)
-                        {
-                            asyncAction(false, 1, null, null);
-                            ResourcesManager.NextFrame(
-                                () => asyncAction(
-                                    true,
-                                    1,
-                                    ResourcesManager.KSwordKitName + ": 资源加载失败! 该资源是场景资源，但是请求加载非场景资源，因此无法加载! 请使用 `KSwordKit.Contents.ResourcesManagement.ResourcesManager.LoadSceneAsync` 相关的API再次尝试。\n参数 assetPath=" + assetPath,
-                                    null
-                                )
-                            );
-                            return;
-                        }
+                var ro = ResourcesManager.Instance.ResourceObjectPath_ResourceObjectDic[assetPath];
+                var rm = ResourcesManager.Instance.AssetbundleName_AssetBundlePathDic[ro.AssetBundleName];
+                if (ro.IsScene && !isLoadScene)
+                {
+                    asyncAction(false, 1, null, null);
+                    ResourcesManager.NextFrame(
+                        () => asyncAction(
+                            true,
+                            1,
+                            ResourcesManager.KSwordKitName + ": 资源加载失败! 该资源是场景资源，但是请求加载非场景资源，因此无法加载! 请使用 `KSwordKit.Contents.ResourcesManagement.ResourcesManager.LoadSceneAsync` 相关的API再次尝试。\n参数 assetPath=" + assetPath,
+                            null
+                        )
+                    );
+                    return;
+                }
+                if (!ro.IsScene && isLoadScene)
+                {
+                    asyncAction(false, 1, null, null);
+                    ResourcesManager.NextFrame(
+                        () => asyncAction(
+                            true,
+                            1,
+                            ResourcesManager.KSwordKitName + ": 资源加载失败! 该资源不是场景资源，但是请求加载场景资源，因此无法加载! 请使用 `KSwordKit.Contents.ResourcesManagement.ResourcesManager.LoadAssetAsync` 相关的API再次尝试。\n参数 assetPath=" + assetPath,
+                            null
+                        )
+                    );
+                    return;
+                }
+                // 根据资源加载位置的不同采取不同的加载策略
+                switch (resourcesLoadingLocation)
+                {
+                    // 使用 Resources.LoadAsync
+                    case ResourcesLoadingLocation.Resources:
                         if (ro.IsScene && isLoadScene)
                         {
                             if (!_TypeIsSceneInfo)
                             {
-                                Debug.LogWarning(ResourcesManager.KSwordKitName + ": 应当提供类型 `KSwordKit.Contents.ResourcesManagement.SceneInfo`；当前操作将以默认方式继续加载。");
+                                Debug.LogWarning(ResourcesManager.KSwordKitName + ": 泛型应当提供类型 `KSwordKit.Contents.ResourcesManagement.SceneInfo`；当前操作将以默认方式继续执行。");
                             }
                             T _sceneinfo = null;
                             bool isset__sceneinfo = false;
@@ -161,62 +161,24 @@ namespace KSwordKit.Contents.ResourcesManagement
                             }));
                             return;
                         }
-                        if (!ro.IsScene && isLoadScene)
-                        {
-                            asyncAction(false, 1, null, null);
-                            ResourcesManager.NextFrame(
-                                () => asyncAction(
-                                    true,
-                                    1,
-                                    ResourcesManager.KSwordKitName + ": 资源加载失败! 该资源不是场景资源，但是请求加载场景资源，因此无法加载! 请使用 `KSwordKit.Contents.ResourcesManagement.ResourcesManager.LoadAssetAsync` 相关的API再次尝试。\n参数 assetPath=" + assetPath,
-                                    null
-                                )
-                            );
-                            return;
-                        }
+
 
                         _loadResourcesByResources(assetPath, asyncAction);
-                    }
-                    else
-                    {
-                        if (asyncAction != null)
-                        {
-                            asyncAction(false, 1, null, null);
-                            ResourcesManager.NextFrame(() => asyncAction(true, 1, ResourcesManager.KSwordKitName + ": 资源不存在！请检查参数 assetPath 是否正确，assetPath=" + assetPath, null));
-                        }
-                    }
+                        break;
+                    // 其他路径下都使用同样的办法加载资源
+                    // 加载器只处理本地资源
+                    // 当使用远程资源时，资源管理器会在需要更新的时候，先更新远程资源到本地，进而保证加载器加载的永远是最新的资源包。
+                    case ResourcesLoadingLocation.StreamingAssetsPath:
+                    case ResourcesLoadingLocation.PersistentDataPath:
+                    case ResourcesLoadingLocation.RemotePath:
 
-                    break;
-                // 其他路径下都使用同样的办法加载资源
-                // 加载器只处理本地资源
-                // 当使用远程资源时，资源管理器会在需要更新的时候，先更新远程资源到本地，进而保证加载器加载的永远是最新的资源包。
-                case ResourcesLoadingLocation.StreamingAssetsPath:
-                case ResourcesLoadingLocation.PersistentDataPath:
-                case ResourcesLoadingLocation.RemotePath:
-
-                    if (ResourcesManager.Instance.ResourceObjectPath_ResourceObjectDic.ContainsKey(assetPath))
-                    {
-                        var ro = ResourcesManager.Instance.ResourceObjectPath_ResourceObjectDic[assetPath];
-                        var rm = ResourcesManager.Instance.AssetbundleName_AssetBundlePathDic[ro.AssetBundleName];
                         // 加载资源
-                        System.Action abloadedAction = () => {
+                        System.Action abloadedAction = () =>
+                        {
                             float _progress = 0;
-                            if (ro.IsScene && !isLoadScene)
-                            {
-                                asyncAction(false, 1, null, null);
-                                ResourcesManager.NextFrame(
-                                    () => asyncAction(
-                                        true,
-                                        1,
-                                        ResourcesManager.KSwordKitName + ": 资源加载失败! 该资源是场景资源，但是请求加载非场景资源，因此无法加载! 请使用 `KSwordKit.Contents.ResourcesManagement.ResourcesManager.LoadSceneAsync` 相关的API再次尝试。\n参数 assetPath=" + assetPath,
-                                        null
-                                    )
-                                );
-                                return;
-                            }
                             if (ro.IsScene && isLoadScene)
                             {
-                                if(!_TypeIsSceneInfo)
+                                if (!_TypeIsSceneInfo)
                                 {
                                     Debug.LogWarning(ResourcesManager.KSwordKitName + ": 应当提供类型 `KSwordKit.Contents.ResourcesManagement.SceneInfo`；当前操作将以默认方式继续加载。");
                                 }
@@ -241,73 +203,60 @@ namespace KSwordKit.Contents.ResourcesManagement
                                 }));
                                 return;
                             }
-                            if(!ro.IsScene && isLoadScene)
-                            {
-                                asyncAction(false, 1, null, null);
-                                ResourcesManager.NextFrame(
-                                    () => asyncAction(
-                                        true,
-                                        1,
-                                        ResourcesManager.KSwordKitName + ": 资源加载失败! 该资源不是场景资源，但是请求加载场景资源，因此无法加载! 请使用 `KSwordKit.Contents.ResourcesManagement.ResourcesManager.LoadAssetAsync` 相关的API再次尝试。\n参数 assetPath=" + assetPath,
-                                        null
-                                    )
-                                );
-                                return;
-                            }
 
                             _loader.StartCoroutine(ro.AsyncLoad(assetPath, rm.AssetBundle, (isdone, progress, error, obj) =>
+                            {
+
+                                if (isdone)
                                 {
-
-                                    if (isdone)
+                                    System.Action action = () =>
                                     {
-                                        System.Action action = () =>
+                                        string asyncLoadAbr_error = null;
+                                        try
                                         {
-                                            string asyncLoadAbr_error = null;
-                                            try
+                                            T t = null;
+                                            if (_TypeIsSprite)
                                             {
-                                                T t = null;
-                                                if (_TypeIsSprite)
-                                                {
-                                                    var t2d = obj as Texture2D;
-                                                    t = Sprite.Create(t2d, new Rect(0, 0, t2d.width, t2d.height), Vector2.zero) as T;
-                                                }
-                                                else
-                                                    t = obj as T;
-
-                                                if (t != null)
-                                                {
-                                                    // 资源加载成功后，存入资源缓存中
-                                                    CacheDic[assetPath] = t;
-                                                    asyncAction(true, 1, null, t);
-                                                }
-                                                else
-                                                {
-                                                    asyncLoadAbr_error = ResourcesManager.KSwordKitName + ": 资源加载成功，但该资源无法转换为 " + _Type.FullName + " 类型。\nassetPath=" + assetPath;
-                                                    asyncAction(true, 1, asyncLoadAbr_error, null);
-                                                }
+                                                var t2d = obj as Texture2D;
+                                                t = Sprite.Create(t2d, new Rect(0, 0, t2d.width, t2d.height), Vector2.zero) as T;
                                             }
-                                            catch (System.Exception e)
+                                            else
+                                                t = obj as T;
+
+                                            if (t != null)
                                             {
-                                                asyncLoadAbr_error = ResourcesManager.KSwordKitName + ": 资源加载成功，但该资源无法转换为 " + _Type.FullName + " 类型, " + e.Message + "\nassetPath=" + assetPath; ;
+                                                // 资源加载成功后，存入资源缓存中
+                                                CacheDic[assetPath] = t;
+                                                asyncAction(true, 1, null, t);
+                                            }
+                                            else
+                                            {
+                                                asyncLoadAbr_error = ResourcesManager.KSwordKitName + ": 资源加载成功，但该资源无法转换为 " + _Type.FullName + " 类型。\nassetPath=" + assetPath;
                                                 asyncAction(true, 1, asyncLoadAbr_error, null);
                                             }
-                                        };
-                                        if (_progress != 1)
-                                        {
-                                            if (asyncAction != null)
-                                                asyncAction(false, 1, error, null);
-                                            ResourcesManager.NextFrame(action);
                                         }
-                                        else
-                                            action();
-
-                                        return;
+                                        catch (System.Exception e)
+                                        {
+                                            asyncLoadAbr_error = ResourcesManager.KSwordKitName + ": 资源加载成功，但该资源无法转换为 " + _Type.FullName + " 类型, " + e.Message + "\nassetPath=" + assetPath; ;
+                                            asyncAction(true, 1, asyncLoadAbr_error, null);
+                                        }
+                                    };
+                                    if (_progress != 1)
+                                    {
+                                        if (asyncAction != null)
+                                            asyncAction(false, 1, error, null);
+                                        ResourcesManager.NextFrame(action);
                                     }
+                                    else
+                                        action();
 
-                                    _progress = 2f / 3f + 1f / 3f * progress;
-                                    if (asyncAction != null && _progress > 2f / 3f)
-                                        asyncAction(false, _progress, error, null);
-                                }));
+                                    return;
+                                }
+
+                                _progress = 2f / 3f + 1f / 3f * progress;
+                                if (asyncAction != null && _progress > 2f / 3f)
+                                    asyncAction(false, _progress, error, null);
+                            }));
                         };
 
                         if (rm.AssetBundle == null)
@@ -334,18 +283,19 @@ namespace KSwordKit.Contents.ResourcesManagement
                             }));
                         }
                         else
-                            abloadedAction();
-                    }
-                    else
-                    {
-                        if (asyncAction != null)
                         {
-                            asyncAction(false, 1, null, null);
-                            ResourcesManager.NextFrame(() => asyncAction(true, 1, ResourcesManager.KSwordKitName + ": 资源不存在！请检查参数 assetPath 是否正确，assetPath=" + assetPath, null));
+                            abloadedAction();
                         }
-                    }
-
-                    break;
+                        break;
+                }
+            }
+            else
+            {
+                if (asyncAction != null)
+                {
+                    asyncAction(false, 1, null, null);
+                    ResourcesManager.NextFrame(() => asyncAction(true, 1, ResourcesManager.KSwordKitName + ": 资源不存在！请检查参数 assetPath 是否正确，assetPath=" + assetPath, null));
+                }
             }
         }
         static void loadAsync(string[] assetPaths, ResourcesLoadingLocation resourcesLoadingLocation, bool isLoadScene, Func<string, AsyncOperation>[] sceneAsyncRequestFuncs, System.Action<bool, float, string, T[]> asyncAction)
@@ -488,29 +438,6 @@ namespace KSwordKit.Contents.ResourcesManagement
         public static void LoadAsync(string[] assetPaths, ResourcesLoadingLocation resourcesLoadingLocation, System.Action<bool, float, string, T[]> asyncAction)
         {
             loadAsync(assetPaths, resourcesLoadingLocation, false, null, asyncAction);
-        }
-        /// <summary>
-        /// 给定的路径（文件夹或文件）中加载所有资源
-        /// <para>如果想递归目录内所有资源可以使用<seealso cref="LoadAllAsync(string, bool, System.Action{ResourcesRequestAsyncOperation})"/></para>
-        /// <para>参数 asyncAction 是加载资源的异步回调；查看<see cref="ResourcesRequestAsyncOperation"/></para>
-        /// </summary>
-        /// <param name="assetPath">给定的资源路径（文件夹或文件）</param>
-        /// <param name="asyncAction">异步回调；参数是异步结果，内部包含进度、错误信息、加载结果等内容；</param>
-        public void LoadAllAsync(string assetPath, System.Action<ResourcesRequestAsyncOperation> asyncAction)
-        {
-
-        }
-		/// <summary>
-		/// 给定的路径（文件夹或文件）中加载所有资源
-		/// <para>参数 deepResources 指示函数是否递归遍历子目录内的资源，当值为false时，函数行为和<seealso cref="LoadAllAsync(string, System.Action{ResourcesRequestAsyncOperation})"/>相同</para>
-		/// <para>参数 asyncAction 是加载资源的异步回调；查看<see cref="ResourcesRequestAsyncOperation"/></para>
-		/// </summary>
-		/// <param name="assetPath">给定的资源路径（文件夹或文件）</param>
-		/// <param name="deepResources">指示函数是否遍历子目录所有资源</param>
-		/// <param name="asyncAction">异步回调；参数是异步结果，内部包含进度、错误信息、加载结果等内容；</param>
-		public void LoadAllAsync(string assetPath, bool deepResources, System.Action<ResourcesRequestAsyncOperation> asyncAction)
-        {
-
         }
         /// <summary>
         /// 单个场景异步加载
