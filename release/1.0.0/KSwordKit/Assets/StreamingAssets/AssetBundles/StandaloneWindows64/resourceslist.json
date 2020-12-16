@@ -1,0 +1,336 @@
+{
+    "ResourceVersion": "1.0.0.0",
+    "ResourceBuildVersion": "1",
+    "ManifestFileVersion": "0",
+    "CRC": "2951665738",
+    "AssetBundleName": "resources",
+    "AssetBundlePath": "AssetBundles/StandaloneWindows64/resources/resources",
+    "AssetBundleInfos": [
+        {
+            "ResourceVersion": "1.0.0.1",
+            "ResourceBuildVersion": "1",
+            "ManifestFileVersion": "0",
+            "CRC": "1725740528",
+            "AssetFileHashSerializedVersion": "2",
+            "AssetFileHash": "b5df52135248cd607510a1d3579eb99b",
+            "TypeTreeHashSerializedVersion": "2",
+            "TypeTreeHash": "9e6ad29cbd2df8fbe1a15315db0e51ab",
+            "HashAppended": "0",
+            "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+            "AssetBundlePath": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+            "ResourceObjects": [
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/项目升级按钮动画.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "项目升级按钮动画"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/图标/2.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "2"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/图标/3.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "3"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/图标/5.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "5"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/图标/fudai.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "fudai"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/图标/4.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "4"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/4字广告.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "4字广告"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/按钮.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "按钮"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/图标/6.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "6"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/视屏.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "视屏"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/图标/8.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "8"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/打卡任务按钮.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "打卡任务按钮"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/图标/1.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "1"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/随机事件名字.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "随机事件名字"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/按钮/图标/7.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "7"
+                }
+            ],
+            "Dependencies": []
+        },
+        {
+            "ResourceVersion": "1.0.0.1",
+            "ResourceBuildVersion": "1",
+            "ManifestFileVersion": "0",
+            "CRC": "2921731226",
+            "AssetFileHashSerializedVersion": "2",
+            "AssetFileHash": "4fe9eaeebd79b7fb47e8a21e6565650f",
+            "TypeTreeHashSerializedVersion": "2",
+            "TypeTreeHash": "9e6ad29cbd2df8fbe1a15315db0e51ab",
+            "HashAppended": "0",
+            "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/个人信息/个人信息",
+            "AssetBundlePath": "kswordkit/examples/exampleresourcesmanagement/resources/texture/个人信息/个人信息",
+            "ResourceObjects": [
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/个人信息/个人信息",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/个人信息/个人信息图标.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "个人信息图标"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/个人信息/个人信息",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/个人信息/个人信息背景.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "个人信息背景"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/个人信息/个人信息",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/个人信息/改名.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "改名"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/个人信息/个人信息",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/个人信息/个人信息修改名字.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "个人信息修改名字"
+                }
+            ],
+            "Dependencies": []
+        },
+        {
+            "ResourceVersion": "1.0.0.1",
+            "ResourceBuildVersion": "1",
+            "ManifestFileVersion": "0",
+            "CRC": "4020794303",
+            "AssetFileHashSerializedVersion": "2",
+            "AssetFileHash": "36dcbbc518c05eef6427c808838ded22",
+            "TypeTreeHashSerializedVersion": "2",
+            "TypeTreeHash": "9e6ad29cbd2df8fbe1a15315db0e51ab",
+            "HashAppended": "0",
+            "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/进度条/进度条",
+            "AssetBundlePath": "kswordkit/examples/exampleresourcesmanagement/resources/texture/进度条/进度条",
+            "ResourceObjects": [
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/进度条/进度条",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/进度条/lod-2.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "lod-2"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/进度条/进度条",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/进度条/lod-1.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "lod-1"
+                }
+            ],
+            "Dependencies": []
+        },
+        {
+            "ResourceVersion": "1.0.0.1",
+            "ResourceBuildVersion": "1",
+            "ManifestFileVersion": "0",
+            "CRC": "3246670662",
+            "AssetFileHashSerializedVersion": "2",
+            "AssetFileHash": "826948f61634886e57fabbf9cd150917",
+            "TypeTreeHashSerializedVersion": "2",
+            "TypeTreeHash": "9e6ad29cbd2df8fbe1a15315db0e51ab",
+            "HashAppended": "0",
+            "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/背景/背景",
+            "AssetBundlePath": "kswordkit/examples/exampleresourcesmanagement/resources/texture/背景/背景",
+            "ResourceObjects": [
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/背景/背景",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/背景/海天背景.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "海天背景"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/背景/背景",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/背景/背景光效.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "背景光效"
+                },
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/texture/背景/背景",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/texture/背景/扩张背景.png",
+                    "FileExtensionName": ".png",
+                    "ObjectName": "扩张背景"
+                }
+            ],
+            "Dependencies": []
+        },
+        {
+            "ResourceVersion": "1.0.0.1",
+            "ResourceBuildVersion": "1",
+            "ManifestFileVersion": "0",
+            "CRC": "3942491076",
+            "AssetFileHashSerializedVersion": "2",
+            "AssetFileHash": "563f13a002e0169aa6fd5579921c3efe",
+            "TypeTreeHashSerializedVersion": "2",
+            "TypeTreeHash": "41c7a6fefc0df9dfe9532f6e29eeaab4",
+            "HashAppended": "0",
+            "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/prefabs/prefabs",
+            "AssetBundlePath": "kswordkit/examples/exampleresourcesmanagement/resources/prefabs/prefabs",
+            "ResourceObjects": [
+                {
+                    "IsScene": false,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/resources/prefabs/prefabs",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Resources/prefabs/loadSceneButton.prefab",
+                    "FileExtensionName": ".prefab",
+                    "ObjectName": "loadSceneButton"
+                }
+            ],
+            "Dependencies": [
+                "kswordkit/examples/exampleresourcesmanagement/resources/texture/按钮/按钮"
+            ]
+        },
+        {
+            "ResourceVersion": "1.0.0.1",
+            "ResourceBuildVersion": "1",
+            "ManifestFileVersion": "0",
+            "CRC": "2390625764",
+            "AssetFileHashSerializedVersion": "2",
+            "AssetFileHash": "3b8fb846ff9918edbd1a9664ceb3ee2d",
+            "TypeTreeHashSerializedVersion": "2",
+            "TypeTreeHash": "162d151e7534a7beafeacae96290ebdd",
+            "HashAppended": "0",
+            "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/test3_unity",
+            "AssetBundlePath": "kswordkit/examples/exampleresourcesmanagement/test3_unity",
+            "ResourceObjects": [
+                {
+                    "IsScene": true,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/test3_unity",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Test3.unity",
+                    "FileExtensionName": ".unity",
+                    "ObjectName": "Test3"
+                }
+            ],
+            "Dependencies": []
+        },
+        {
+            "ResourceVersion": "1.0.0.1",
+            "ResourceBuildVersion": "1",
+            "ManifestFileVersion": "0",
+            "CRC": "552296499",
+            "AssetFileHashSerializedVersion": "2",
+            "AssetFileHash": "b7da3c73d1cdc872532f3adacfb85c54",
+            "TypeTreeHashSerializedVersion": "2",
+            "TypeTreeHash": "e23dc95f0b689edc43930bcbef6d89de",
+            "HashAppended": "0",
+            "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/test_unity",
+            "AssetBundlePath": "kswordkit/examples/exampleresourcesmanagement/test_unity",
+            "ResourceObjects": [
+                {
+                    "IsScene": true,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/test_unity",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Test.unity",
+                    "FileExtensionName": ".unity",
+                    "ObjectName": "Test"
+                }
+            ],
+            "Dependencies": []
+        },
+        {
+            "ResourceVersion": "1.0.0.1",
+            "ResourceBuildVersion": "1",
+            "ManifestFileVersion": "0",
+            "CRC": "784107978",
+            "AssetFileHashSerializedVersion": "2",
+            "AssetFileHash": "a351c2bc5ee49201cdae4b65481fe919",
+            "TypeTreeHashSerializedVersion": "2",
+            "TypeTreeHash": "162d151e7534a7beafeacae96290ebdd",
+            "HashAppended": "0",
+            "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/test2_unity",
+            "AssetBundlePath": "kswordkit/examples/exampleresourcesmanagement/test2_unity",
+            "ResourceObjects": [
+                {
+                    "IsScene": true,
+                    "AssetBundleName": "kswordkit/examples/exampleresourcesmanagement/test2_unity",
+                    "ResourcePath": "Assets/KSwordKit/Examples/ExampleResourcesManagement/Test2.unity",
+                    "FileExtensionName": ".unity",
+                    "ObjectName": "Test2"
+                }
+            ],
+            "Dependencies": []
+        }
+    ]
+}
