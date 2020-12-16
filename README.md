@@ -7,7 +7,7 @@
 刚开始构思这个框架，正好公司项目也在做优化，所以在这里开坑造轮子了，希望大家给出宝贵的意见。
 
 # **KSwordKit** 设计图
-[**KSwordKit** 设计图](https://github.com/keenlovelife/KSwordKit/blob/master/Image/master/KSwordKit%20%E8%AE%BE%E8%AE%A1%E5%9B%BE.png)
+![**KSwordKit** 设计图](https://github.com/keenlovelife/KSwordKit/blob/master/Image/master/KSwordKit%20%E8%AE%BE%E8%AE%A1%E5%9B%BE.png?raw=true)
 
 # 当前框架内可用模块
 1. [资源管理器](资源管理器)
