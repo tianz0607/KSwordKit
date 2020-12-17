@@ -7,7 +7,7 @@
 刚开始构思这个框架，正好公司项目也在做优化，所以在这里开坑造轮子了，希望大家给出宝贵的意见。
 
 # **KSwordKit** 设计图
-![**KSwordKit** 设计图](https://github.com/keenlovelife/KSwordKit/blob/master/Image/KSwordKit%20%E8%AE%BE%E8%AE%A1%E5%9B%BE.png?raw=true)
+![**KSwordKit**](https://s3.ax1x.com/2020/12/17/r3hWff.png)
 
 **KSwordKit** 使用模块管理器来管理所有模块，同时在Unity 编辑器中也提供了对模块的基本操作：添加某模型、删除某模块、更新某模块以及查找模块的 UI 界面，使用这套设计让项目模块实现自动化管理。
 
