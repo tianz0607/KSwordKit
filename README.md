@@ -7,7 +7,7 @@
 刚开始构思这个框架，主要是总结一下游戏开发技术，提高工作效率，所以在这里开坑造轮子了，希望大家给出宝贵的意见。
 
 # **KSwordKit** 设计图
-![**KSwordKit**](https://s3.ax1x.com/2020/12/17/r3hWff.png)
+![**KSwordKit**](https://github.com/keenlovelife/KSwordKit/blob/master/Image/KSWordKit%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1.jpg?raw=true)
 
 **KSwordKit** 使用模块管理器来管理所有模块，同时在Unity 编辑器中也提供了对模块的基本操作：添加某模型、删除某模块、更新某模块以及查找模块的 UI 界面，使用这套设计让项目模块实现自动化管理。
 
