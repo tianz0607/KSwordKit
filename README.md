@@ -7,7 +7,7 @@
 刚开始构思这个框架，主要是总结一下游戏开发技术，提高工作效率，所以在这里开坑造轮子了，希望大家给出宝贵的意见。
 
 # **KSwordKit** 框架层次图
-![**KSwordKit**](https://github.com/keenlovelife/KSwordKit/blob/master/Image/KSWordKit%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1.jpg?raw=true)
+![**KSwordKit**](https://github.com/keenlovelife/KSwordKit/blob/master/GitHub_Images/KSWordKit%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1.jpg?raw=true)
 
 图中可以看出 **KSwordKit** 位于 Unity 之上，具体应用程序之下。 **KSwordKit** 试图为你的应用程序提供功能完备，接口丰富的快速开发工具包。
 
