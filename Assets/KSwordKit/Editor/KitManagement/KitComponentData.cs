@@ -1,9 +1,9 @@
 ﻿
 namespace KSwordKit.Editor.KitManagement
 {
-    public class ModuleData
+    public class KitComponentData
     {
-        public ModuleData(ModuleConfig moduleConfig)
+        public KitComponentData()
         {
 
         }
