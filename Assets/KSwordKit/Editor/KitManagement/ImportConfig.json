@@ -1,0 +1,9 @@
+
+{
+    "Name":"Your Module Name",  // 模块名称
+    "Author": "Your Name",      // 作者名称
+    "Version": "v1.0.0",        // 版本号
+    "ProductionDate": "",       // 制作日期
+    "Dependencies":[],          // 依赖数组
+    "FileSettings":[]           // 模块文件设置
+}

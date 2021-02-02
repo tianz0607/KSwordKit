@@ -26,6 +26,14 @@ namespace KSwordKit.Editor.KitManagement
         /// </summary>
         public string Author;
         /// <summary>
+        /// 作者联系方式
+        /// </summary>
+        public string Contact;
+        /// <summary>
+        /// 作者的各人主页
+        /// </summary>
+        public string HomePage;
+        /// <summary>
         /// 组件版本号
         /// <para>版本号一般为类似v1.0.0的字符串，版本号请遵循语义化版本号规范 2.0.0:https://semver.org/lang/zh-CN/</para>
         /// </summary>

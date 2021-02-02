@@ -1,12 +1,11 @@
 ﻿
 namespace KSwordKit.Editor.KitManagement
 {
-    public class ModuleView
+    public class ModuleData
     {
-        public ModuleView(ModuleData moduleData)
+        public ModuleData(ModuleConfig moduleConfig)
         {
 
         }
     }
 }
-

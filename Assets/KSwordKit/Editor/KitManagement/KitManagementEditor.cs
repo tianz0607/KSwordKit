@@ -7,30 +7,29 @@ namespace KSwordKit.Editor.KitManagement
 {
     public class KitManagementEditor
     {
-        public const string ModuleConfigFileName = "config.json";
-        public const string KitLocalResourceCoreDirectory = Const.ConfigurationConst.KitLocalResourceDirectory + "/Core";
-        public const string KitLocalResourceModulesDirectory = Const.ConfigurationConst.KitLocalResourceDirectory + "/Modules";
-
         static KitManagementEditorWindowData kitManagementEditorWindowData = new KitManagementEditorWindowData {
             TitleString = Const.ConfigurationConst.KitName,
             SubTitleString = "",
             KitLocalResourceRootDirectory = Const.ConfigurationConst.KitLocalResourceDirectory,
-            KitLocalResourceCoreDirectory = KitLocalResourceCoreDirectory,
-            KitLocalResourceModulesDirectory = KitLocalResourceModulesDirectory,
-            ModuleConfigFileName = ModuleConfigFileName
+            KitLocalResourceAllComponentsRootPathList = new List<string>() { "Basic", "Framework" },
+            KitConfigFileName = "config.json",
+            KitConfigList = new List<KitConfig>(),
+            kitShouldShowConfigList = new List<KitConfig>(),
+            KitError = null,
+            KitMaxShowScrollItemCount = 10
         };
 
 
-        public const string ImportChild_Assets = "Assets/KSwordKit/框架管理/导入模块";
-        public const string ImportChild = "KSwordKit/框架管理/导入模块 _%#I";
-        public const string ImportWindowTitle = "导入模块";
+        public const string ImportChild_Assets = "Assets/KSwordKit/框架管理/导入组件";
+        public const string ImportChild = "KSwordKit/框架管理/导入组件 _%#I";
+        public const string ImportWindowTitle = "导入组件";
 
-        public const string DeleteChild_AlreadyImport_Assets = "Assets/KSwordKit/框架管理/删除模块";
-        public const string DeleteChild_AlreadyImport = "KSwordKit/框架管理/删除模块 _%#D";
-        public const string DeleteImportWindowTitle = "导入模块";
+        public const string DeleteChild_AlreadyImport_Assets = "Assets/KSwordKit/框架管理/删除组件";
+        public const string DeleteChild_AlreadyImport = "KSwordKit/框架管理/删除组件 _%#D";
+        public const string DeleteImportWindowTitle = "导入组件";
 
-        public const string MakeNew_Assets = "Assets/KSwordKit/框架管理/制作新模块";
-        public const string MakeNew = "KSwordKit/框架管理/制作新模块 _%&N";
+        public const string MakeNew_Assets = "Assets/KSwordKit/框架管理/制作新组件";
+        public const string MakeNew = "KSwordKit/框架管理/制作新组件 _%&N";
         public const string MakeNewWindowTitle = "制作新模块";
 
         public const string About_Assets = "Assets/KSwordKit/框架管理/关于作者";
