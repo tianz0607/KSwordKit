@@ -23,7 +23,7 @@ namespace KSwordKit.Const
         /// KSwordKit框架已被应用到项目中的所有模块所在的根目录
         /// <para>此目录指示了在点击 `导入模块` 时，模块将被安装的位置。</para>
         /// </summary>
-        public const string KitContentDirectory = "Assets/KSwordKit/Content";
+        public const string KitComponentInstallRootDirectory = "Assets/KSwordKit/AllComponents";
         /// <summary>
         /// KSwordKit框架包含的所有模型所在的根目录
         /// <para>此目录指示了在用户执行 `导入部件` 或 `导出部件` 时, 将此处存取模块数据。</para>

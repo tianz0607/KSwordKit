@@ -44,6 +44,11 @@ namespace KSwordKit.Editor.KitManagement
         /// </summary>
         public string Date;
         /// <summary>
+        /// 组件描述
+        /// <para>一般用于介绍组件</para>
+        /// </summary>
+        public string Description;
+        /// <summary>
         /// 该部件所依赖的框架内其他组件列表
         /// 列表内容是其他组件ID字符串
         /// <para>根据 `独立无依赖原则`，请尽量保持该项为空。</para>
@@ -55,6 +60,26 @@ namespace KSwordKit.Editor.KitManagement
         /// <para>如果有些特殊文件需要在其他路径下才能正常工作，可以使用该项单独设置。</para>
         /// </summary>
         public List<KitConfigFileSetting> FileSettings;
+        /// <summary>
+        /// 组件显示的名字
+        /// </summary>
+        [NonSerialized]
+        public string DisplayedName;
+        /// <summary>
+        /// 该组件的本地资源所在源目录
+        /// </summary>
+        [NonSerialized]
+        public string LocalResourceDirectory;
+        /// <summary>
+        /// 该组件安装到Unity项目后，所在的目录
+        /// </summary>
+        [NonSerialized]
+        public string LocalInstallationResourceDirectory;
+        /// <summary>
+        /// 该组件的类别。如，属于Basic或者Framework
+        /// </summary>
+        [NonSerialized]
+        public string Classification;
     }
     [Serializable]
     public class KitConfigFileSetting

@@ -12,6 +12,7 @@ namespace KSwordKit.Editor.KitManagement
             SubTitleString = "",
             KitLocalResourceRootDirectory = Const.ConfigurationConst.KitLocalResourceDirectory,
             KitLocalResourceAllComponentsRootPathList = new List<string>() { "Basic", "Framework" },
+            KitComponentInstallRootDirectory = Const.ConfigurationConst.KitComponentInstallRootDirectory,
             KitConfigFileName = "config.json",
             KitConfigList = new List<KitConfig>(),
             kitShouldShowConfigList = new List<KitConfig>(),
@@ -20,13 +21,13 @@ namespace KSwordKit.Editor.KitManagement
         };
 
 
-        public const string ImportChild_Assets = "Assets/KSwordKit/框架管理/导入组件";
-        public const string ImportChild = "KSwordKit/框架管理/导入组件 _%#I";
-        public const string ImportWindowTitle = "导入组件";
+        public const string ImportChild_Assets = "Assets/KSwordKit/框架管理/安装组件";
+        public const string ImportChild = "KSwordKit/框架管理/安装组件 _%#I";
+        public const string ImportWindowTitle = "安装组件";
 
-        public const string DeleteChild_AlreadyImport_Assets = "Assets/KSwordKit/框架管理/删除组件";
-        public const string DeleteChild_AlreadyImport = "KSwordKit/框架管理/删除组件 _%#D";
-        public const string DeleteImportWindowTitle = "导入组件";
+        public const string DeleteChild_AlreadyImport_Assets = "Assets/KSwordKit/框架管理/卸载组件";
+        public const string DeleteChild_AlreadyImport = "KSwordKit/框架管理/卸载组件 _%#D";
+        public const string DeleteImportWindowTitle = "卸载组件";
 
         public const string MakeNew_Assets = "Assets/KSwordKit/框架管理/制作新组件";
         public const string MakeNew = "KSwordKit/框架管理/制作新组件 _%&N";
