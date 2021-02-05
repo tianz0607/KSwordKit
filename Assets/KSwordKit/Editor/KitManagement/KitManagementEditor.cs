@@ -17,17 +17,17 @@ namespace KSwordKit.Editor.KitManagement
             KitConfigList = new List<KitConfig>(),
             kitShouldShowConfigList = new List<KitConfig>(),
             KitError = null,
-            KitMaxShowScrollItemCount = 10
+            KitMaxShowScrollItemCount = 20
         };
 
 
         public const string ImportChild_Assets = "Assets/KSwordKit/框架管理/安装组件";
         public const string ImportChild = "KSwordKit/框架管理/安装组件 _%#I";
-        public const string ImportWindowTitle = "安装组件";
+        public const string InstallComponentWindowTitle = "安装组件";
 
         public const string DeleteChild_AlreadyImport_Assets = "Assets/KSwordKit/框架管理/卸载组件";
         public const string DeleteChild_AlreadyImport = "KSwordKit/框架管理/卸载组件 _%#D";
-        public const string DeleteImportWindowTitle = "卸载组件";
+        public const string UninstallComponentWindowTitle = "卸载组件";
 
         public const string MakeNew_Assets = "Assets/KSwordKit/框架管理/制作新组件";
         public const string MakeNew = "KSwordKit/框架管理/制作新组件 _%&N";
@@ -43,17 +43,18 @@ namespace KSwordKit.Editor.KitManagement
 
         [MenuItem(ImportChild_Assets, false, 0)]
         [MenuItem(ImportChild, false, 0)]
-        public static void ImportChildFunction()
+        public static void InstallComponentFunction()
         {
-            kitManagementEditorWindowData.SubTitleString = ImportWindowTitle;
+            kitManagementEditorWindowData.SubTitleString = InstallComponentWindowTitle;
             KitManagementEditorWindow.Open(kitManagementEditorWindowData);
         }
 
         [MenuItem(DeleteChild_AlreadyImport_Assets, false, 1)]
         [MenuItem(DeleteChild_AlreadyImport, false, 1)]
-        public static void DeleteChildFunction()
+        public static void UninstallComponentFunction()
         {
-            //ImportChildWindow.Open();
+            kitManagementEditorWindowData.SubTitleString = UninstallComponentWindowTitle;
+            KitManagementEditorWindow.Open(kitManagementEditorWindowData);
         }
 
         [MenuItem(MakeNew_Assets, false, 20)]

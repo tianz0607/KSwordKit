@@ -87,10 +87,11 @@ namespace KSwordKit.Editor.KitManagement
         /// <summary>
         /// 该文件在组件内的相对于组件根目录的路径
         /// </summary>
-        public string Path;
+        public string SourcePath;
         /// <summary>
         /// 该文件希望导入的目标位置
+        /// <para>可以是相对位置（相对于项目根目录），也可以是绝对位置。</para>
         /// </summary>
-        public string ImportPath;
+        public string DestPath;
     }
 }

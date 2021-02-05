@@ -1,12 +1,12 @@
 {
     "ID":"",
-    "Name":"Data Processing",
+    "Name":"SingletonTemplate",
     "Author": "ksword.zhang",
     "Contact":"ks@keenlove.com",
     "HomePage":"https://github.com/keenlovelife",
     "Version": "v1.0.0",
     "Date": "2021-2-1",
-    "Description": "数据处理库，提供多种json、xml等多种数据格式解析api。",
+    "Description": "单例模板，提供方便生成单例的模板类接口。",
     "Dependencies":[],        
     "FileSettings":[]     
 }

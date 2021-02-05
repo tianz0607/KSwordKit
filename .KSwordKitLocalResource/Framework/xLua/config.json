@@ -1,12 +1,12 @@
 {
     "ID":"",
-    "Name":"Data Processing",
+    "Name":"xLua",
     "Author": "ksword.zhang",
     "Contact":"ks@keenlove.com",
     "HomePage":"https://github.com/keenlovelife",
     "Version": "v1.0.0",
     "Date": "2021-2-1",
-    "Description": "数据处理库，提供多种json、xml等多种数据格式解析api。",
+    "Description": "xLua框架，向项目添加支持xLua框架的工具，支持Lua脚本。",
     "Dependencies":[],        
     "FileSettings":[]     
 }
