@@ -34,7 +34,3 @@
 
 # 文档
 **KSwordKit** 里面的每部分都会在 [Wiki](https://github.com/keenlovelife/KSwordKit/wiki) 里面撰写文档，大家使用中遇到问题可以去查阅。
-
-# 当前框架内可用模块
-1. [资源管理器](资源管理器)
-2. [增强协程](增强协程)
