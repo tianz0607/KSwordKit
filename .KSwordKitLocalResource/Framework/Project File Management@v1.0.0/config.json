@@ -1,0 +1,12 @@
+{
+    "ID": "",
+    "Name": "Project File Management",
+    "Author": "ksword.zhang",
+    "Contact": "ks@keenlove.com",
+    "HomePage": "https://github.com/keenlovelife",
+    "Version": "v1.0.0",
+    "Date": "2021-2-1",
+    "Description": "项目文件管理，提供自动添加文件注释等项目文件管理。",
+    "Dependencies": [],
+    "FileSettings": []
+}
