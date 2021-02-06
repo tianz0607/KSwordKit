@@ -29,6 +29,8 @@ namespace KSwordKit.Editor.KitManagement
         const string kitUserSearchDefaultInputString = "搜索组件名或组件作者";
         static string kitUserSearchInputString = kitUserSearchDefaultInputString;
         const string kitTempFileName = "kswordkit.tempfile";
+        const int kitItemViewHeight = 25;
+        const int kitSubTitleHeight = 20;
 
         /// <summary>
         /// 窗口打开显示函数
@@ -38,13 +40,20 @@ namespace KSwordKit.Editor.KitManagement
         {
             windowData = data;
             window = GetWindow<KitManagementEditorWindow>(true, windowData.TitleString);
-            UpdateData();
-            window.Show();
+            if (UpdateData())
+            {
+                var tempfilePath = System.IO.Path.Combine(Application.temporaryCachePath, kitTempFileName);
+                if (System.IO.File.Exists(tempfilePath))
+                    System.IO.File.Delete(tempfilePath);
+                System.IO.File.WriteAllText(tempfilePath, windowData.TitleString + "\n" + windowData.SubTitleString);
+                window.minSize = new Vector2(500, 300);
+                window.Show();
+            }
         }
         /// <summary>
         /// 窗口更新数据
         /// </summary>
-        static void UpdateData()
+        static bool UpdateData()
         {
             windowData.KitConfigList.Clear();
             var kitLocalResourceRootDir = windowData.KitLocalResourceRootDirectory;
@@ -64,6 +73,10 @@ namespace KSwordKit.Editor.KitManagement
                             config.LocalResourceDirectory = componentRootPath;
                             config.DisplayedName = config.Name + "@" + config.Version;
                             config.Classification = rootPath;
+                            var installRootDir = System.IO.Path.Combine(windowData.KitComponentInstallRootDirectory, config.Classification);
+                            var componentInstallDir = System.IO.Path.Combine(installRootDir, config.DisplayedName);
+                            if (System.IO.Directory.Exists(componentInstallDir))
+                                config.LocalInstallationResourceDirectory = componentInstallDir;
                             kitConfigList.Add(config);
                         }
                         catch (System.Exception e)
@@ -77,12 +90,15 @@ namespace KSwordKit.Editor.KitManagement
                 if (!string.IsNullOrEmpty(errorPath))
                 {
                     Debug.LogError("解析配置文件时失败：\n" + errorPath);
+                    return false;
                 }
             } 
             else
             {
-                windowData.KitError = "本地资源路径值为空";
+                Debug.LogError("本地资源路径值为空");
+                return false;
             }
+            return true;
         }
         /// <summary>
         /// 遍历得到本地所有组件所在目录
@@ -124,28 +140,24 @@ namespace KSwordKit.Editor.KitManagement
                     var tempfilecontent = tempfilelines[1];
                     if (tempfilecontent == KitManagementEditor.InstallComponentWindowTitle) KitManagementEditor.InstallComponentFunction();
                     else if (tempfilecontent == KitManagementEditor.UninstallComponentWindowTitle) KitManagementEditor.UninstallComponentFunction();
-                    System.IO.File.Delete(tempfilePath);
                 }
                 return;
             }
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
-            kitUserSearchInputString = EditorGUILayout.TextField("所有组件：", kitUserSearchInputString);
+            kitUserSearchInputString = EditorGUILayout.TextField("所有组件：", kitUserSearchInputString, GUILayout.Height(kitSubTitleHeight));
             window.SearchItem(kitUserSearchInputString);
             GUILayout.Space(15);
             EditorGUILayout.EndHorizontal();
 
-            // 显示所有组件
-            if (windowData.KitConfigList.Count > windowData.KitMaxShowScrollItemCount)
-                scorllPos = EditorGUILayout.BeginScrollView(scorllPos, false, true, GUILayout.Height(400));
-            else
-                scorllPos = EditorGUILayout.BeginScrollView(scorllPos, false, false, GUILayout.Height(400));
+            var contentHeigth = windowData.kitShouldShowConfigList.Count * kitItemViewHeight + kitSubTitleHeight + 30;
+            var isHeigtherThanWindow = contentHeigth > window.position.height;
+            var isNarrowerThanWindow = 440 > window.position.width;
+            scorllPos = EditorGUILayout.BeginScrollView(scorllPos, false, isHeigtherThanWindow, GUILayout.Height(window.position.height - 30 - 45));
 
             foreach (var item in windowData.kitShouldShowConfigList)
-            {
                 window.AddItemView(item);
-            }
 
             EditorGUILayout.EndScrollView();
         }
@@ -188,37 +200,27 @@ namespace KSwordKit.Editor.KitManagement
         void AddItemView(KitConfig config)
         {
             EditorGUILayout.BeginHorizontal();
-
-            GUILayout.Label(config.DisplayedName, EditorStyles.boldLabel);
+            GUILayout.Label(config.DisplayedName, EditorStyles.boldLabel, GUILayout.Height(kitItemViewHeight));
             GUILayout.FlexibleSpace();
 
             var buttonName = "安装";
             var isComponentInstalled = window.IsComponentInstalled(config);
             if (isComponentInstalled)
-            {
                 buttonName = "重新安装";
-            }
 
-            if (GUILayout.Button(buttonName, GUILayout.Width(110)))
+            if (GUILayout.Button(buttonName, GUILayout.Width(120), GUILayout.Height(kitItemViewHeight)))
             {
-                var error = window.InstallComponent(config);
-                if (string.IsNullOrEmpty(error))
-                {
-                    var tempfilePath = System.IO.Path.Combine(Application.temporaryCachePath, kitTempFileName);
-                    if (System.IO.File.Exists(tempfilePath))
-                        System.IO.File.Delete(tempfilePath);
-                    System.IO.File.WriteAllText(tempfilePath, windowData.TitleString + "\n" + windowData.SubTitleString);
-                }
+                var error = window.InstallComponent(config, buttonName == "重新安装");
                 AssetDatabase.Refresh();
                 EditorUtility.DisplayDialog("安装部件 '" + config.DisplayedName + "' ", string.IsNullOrEmpty(error) ? "安装成功！" : "安装失败: \n" + error, "确定");
             }
 
             EditorGUI.BeginDisabledGroup(!isComponentInstalled);
-            if (GUILayout.Button("卸载", GUILayout.Width(110)))
+            if (GUILayout.Button("卸载", GUILayout.Width(120), GUILayout.Height(kitItemViewHeight)))
             {
                 var error = window.UninstallComponent(config);
                 AssetDatabase.Refresh();
-                EditorUtility.DisplayDialog("删除部件 '" + config.DisplayedName + "' ", string.IsNullOrEmpty(error) ? "删除成功！" : "删除失败: \n" + error, "确定");
+                EditorUtility.DisplayDialog("卸载部件 '" + config.DisplayedName + "' ", string.IsNullOrEmpty(error) ? "卸载成功！" : "卸载失败: \n" + error, "确定");
             }
             EditorGUI.EndDisabledGroup();
 
@@ -232,7 +234,7 @@ namespace KSwordKit.Editor.KitManagement
         bool IsComponentInstalled(KitConfig config)
         {
             var installRootDir = System.IO.Path.Combine(windowData.KitComponentInstallRootDirectory, config.Classification);
-            var componentInstallDir = System.IO.Path.Combine(installRootDir, config.Name);
+            var componentInstallDir = System.IO.Path.Combine(installRootDir, config.DisplayedName);
             if (!System.IO.Directory.Exists(componentInstallDir)) return false;
             return true;
         }
@@ -241,38 +243,46 @@ namespace KSwordKit.Editor.KitManagement
         /// </summary>
         /// <param name="kitConfig">组件具体的配置数据</param>
         /// <returns>返回null或字符串，null表示安装成功，字符串则表示安装失败的描述。</returns>
-        string InstallComponent(KitConfig config)
+        string InstallComponent(KitConfig config, bool isReinstall)
         {
+            if (isReinstall)
+            {
+                var error = UninstallComponent(config);
+                if (!string.IsNullOrEmpty(error))
+                    return error;
+            }
+
             var installRootDir = System.IO.Path.Combine(windowData.KitComponentInstallRootDirectory, config.Classification);
-            var componentInstallDir = System.IO.Path.Combine(installRootDir, config.Name);
+            var componentInstallDir = System.IO.Path.Combine(installRootDir, config.DisplayedName);
             try
             {
                 window.DirectoryCopy(config.LocalResourceDirectory, componentInstallDir, true);
                 var installedConfigFilePath = System.IO.Path.Combine(componentInstallDir, windowData.KitConfigFileName);
                 if (System.IO.File.Exists(installedConfigFilePath))
                     System.IO.File.Delete(installedConfigFilePath);
-                foreach(var filesetting in config.FileSettings)
+                foreach(var fileSetting in config.FileSettings)
                 {
-                    var filesettingSourcePath = System.IO.Path.Combine(componentInstallDir, filesetting.SourcePath);
-                    if(System.IO.File.Exists(filesettingSourcePath))
+                    var fileSettingSourcePath = System.IO.Path.Combine(componentInstallDir, fileSetting.SourcePath);
+                    if(System.IO.File.Exists(fileSettingSourcePath))
                     {
-                        System.IO.File.Copy(filesettingSourcePath, filesetting.DestPath, true);
-                        System.IO.File.Delete(filesettingSourcePath);
+                        System.IO.File.Copy(fileSettingSourcePath, fileSetting.DestPath, true);
+                        System.IO.File.Delete(fileSettingSourcePath);
                     } 
-                    else if (System.IO.Directory.Exists(filesettingSourcePath))
+                    else if (System.IO.Directory.Exists(fileSettingSourcePath))
                     {
-                        DirectoryCopy(filesettingSourcePath, filesetting.DestPath, true);
-                        DirectoryDelete(filesettingSourcePath);
+                        DirectoryCopy(fileSettingSourcePath, fileSetting.DestPath, true);
+                        DirectoryDelete(fileSettingSourcePath);
                     }
                 }
                 config.LocalInstallationResourceDirectory = componentInstallDir;
                 foreach(var dependency in config.Dependencies)
                 {
-                    foreach(var c in windowData.KitConfigList)
+                    foreach(var _config in windowData.KitConfigList)
                     {
-                        if (dependency == c.Name || dependency == c.DisplayedName)
+                        if (dependency == _config.Name || dependency == _config.DisplayedName)
                         {
-                            InstallComponent(c);
+                            if (IsComponentInstalled(_config))
+                                InstallComponent(_config, false);
                         }
                     }
                 }
@@ -291,9 +301,7 @@ namespace KSwordKit.Editor.KitManagement
         /// <param name="copySubDirs">是否递归拷贝子目录</param>
         void DirectoryCopy(string sourceDir, string destDir, bool copySubDirs)
         {
-            // Get the subdirectories for the specified directory.
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(sourceDir);
-
             if (!dir.Exists)
             {
                 throw new System.IO.DirectoryNotFoundException(
@@ -302,11 +310,7 @@ namespace KSwordKit.Editor.KitManagement
             }
 
             System.IO.DirectoryInfo[] dirs = dir.GetDirectories();
-
-            // If the destination directory doesn't exist, create it.       
             System.IO.Directory.CreateDirectory(destDir);
-
-            // Get the files in the directory and copy them to the new location.
             System.IO.FileInfo[] files = dir.GetFiles();
             foreach (System.IO.FileInfo file in files)
             {
@@ -314,7 +318,6 @@ namespace KSwordKit.Editor.KitManagement
                 file.CopyTo(tempPath, true);
             }
 
-            // If copying subdirectories, copy them and their contents to new location.
             if (copySubDirs)
             {
                 foreach (System.IO.DirectoryInfo subdir in dirs)
@@ -334,6 +337,17 @@ namespace KSwordKit.Editor.KitManagement
             try
             {
                 DirectoryDelete(config.LocalInstallationResourceDirectory);
+                foreach (var filesetting in config.FileSettings)
+                {
+                    if (System.IO.File.Exists(filesetting.DestPath))
+                    {
+                        FileDelete(filesetting.DestPath);
+                    }
+                    else if (System.IO.Directory.Exists(filesetting.DestPath))
+                    {
+                        DirectoryDelete(filesetting.DestPath);
+                    }
+                }
             }
             catch (System.Exception e)
             {
@@ -352,9 +366,21 @@ namespace KSwordKit.Editor.KitManagement
                 System.IO.Directory.Delete(dir, true);
             if (System.IO.Directory.Exists(dir))
                 System.IO.Directory.Delete(dir);
-            var dirmetafile = dir + ".meta";
-            if (System.IO.File.Exists(dirmetafile))
-                System.IO.File.Delete(dirmetafile);
+            var dirMetaFilePath = dir + ".meta";
+            if (System.IO.File.Exists(dirMetaFilePath))
+                System.IO.File.Delete(dirMetaFilePath);
+        }
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="file">要删除的文件路径</param>
+        void FileDelete(string file)
+        {
+            if (System.IO.File.Exists(file))
+                System.IO.File.Delete(file);
+            var fileMetaPath = file + ".meta";
+            if (System.IO.File.Exists(fileMetaPath))
+                System.IO.File.Delete(fileMetaPath);
         }
     }
 }
