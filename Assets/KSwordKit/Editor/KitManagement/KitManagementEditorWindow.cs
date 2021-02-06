@@ -154,7 +154,7 @@ namespace KSwordKit.Editor.KitManagement
             var contentHeigth = windowData.kitShouldShowConfigList.Count * kitItemViewHeight + kitSubTitleHeight + 30;
             var isHeigtherThanWindow = contentHeigth > window.position.height;
             var isNarrowerThanWindow = 440 > window.position.width;
-            scorllPos = EditorGUILayout.BeginScrollView(scorllPos, false, isHeigtherThanWindow, GUILayout.Height(window.position.height - 30 - 45));
+            scorllPos = EditorGUILayout.BeginScrollView(scorllPos, false, isHeigtherThanWindow, GUILayout.Height(window.position.height - 30));
 
             foreach (var item in windowData.kitShouldShowConfigList)
                 window.AddItemView(item);
@@ -212,7 +212,7 @@ namespace KSwordKit.Editor.KitManagement
             {
                 var error = window.InstallComponent(config, buttonName == "重新安装");
                 AssetDatabase.Refresh();
-                EditorUtility.DisplayDialog("安装部件 '" + config.DisplayedName + "' ", string.IsNullOrEmpty(error) ? "安装成功！" : "安装失败: \n" + error, "确定");
+                EditorUtility.DisplayDialog("安装组件 '" + config.DisplayedName + "' ", string.IsNullOrEmpty(error) ? "安装成功！" : "安装失败: \n" + error, "确定");
             }
 
             EditorGUI.BeginDisabledGroup(!isComponentInstalled);
@@ -220,7 +220,7 @@ namespace KSwordKit.Editor.KitManagement
             {
                 var error = window.UninstallComponent(config);
                 AssetDatabase.Refresh();
-                EditorUtility.DisplayDialog("卸载部件 '" + config.DisplayedName + "' ", string.IsNullOrEmpty(error) ? "卸载成功！" : "卸载失败: \n" + error, "确定");
+                EditorUtility.DisplayDialog("卸载组件 '" + config.DisplayedName + "' ", string.IsNullOrEmpty(error) ? "卸载成功！" : "卸载失败: \n" + error, "确定");
             }
             EditorGUI.EndDisabledGroup();
 
@@ -250,6 +250,7 @@ namespace KSwordKit.Editor.KitManagement
                 var error = UninstallComponent(config);
                 if (!string.IsNullOrEmpty(error))
                     return error;
+                AssetDatabase.Refresh();
             }
 
             var installRootDir = System.IO.Path.Combine(windowData.KitComponentInstallRootDirectory, config.Classification);
@@ -281,7 +282,8 @@ namespace KSwordKit.Editor.KitManagement
                     {
                         if (dependency == _config.Name || dependency == _config.DisplayedName)
                         {
-                            if (IsComponentInstalled(_config))
+                            if (_config.DisplayedName == config.DisplayedName) continue;
+                            if (!IsComponentInstalled(_config))
                                 InstallComponent(_config, false);
                         }
                     }
