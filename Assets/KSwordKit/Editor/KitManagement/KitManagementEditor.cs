@@ -31,7 +31,7 @@ namespace KSwordKit.Editor.KitManagement
 
         public const string MakeNew_Assets = "Assets/KSwordKit/框架管理/制作新组件";
         public const string MakeNew = "KSwordKit/框架管理/制作新组件 _%&N";
-        public const string MakeNewWindowTitle = "制作新模块";
+        public const string MakeNewWindowTitle = "制作新组件";
 
         public const string About_Assets = "Assets/KSwordKit/框架管理/关于作者";
         public const string AboutUs = "KSwordKit/框架管理/关于作者 _%&M";
@@ -61,7 +61,8 @@ namespace KSwordKit.Editor.KitManagement
         [MenuItem(MakeNew, false, 20)]
         public static void MakeNewFunction()
         {
-            //MakeNewComponentEditorWindow.Open();
+            kitManagementEditorWindowData.SubTitleString = MakeNewWindowTitle;
+            KitManagementEditorMakeNewWindow.Open(kitManagementEditorWindowData);
         }
 
         [MenuItem(About_Assets, false, 40)]

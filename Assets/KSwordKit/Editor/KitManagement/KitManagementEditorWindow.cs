@@ -39,13 +39,14 @@ namespace KSwordKit.Editor.KitManagement
         public static void Open(KitManagementEditorWindowData data)
         {
             windowData = data;
-            window = GetWindow<KitManagementEditorWindow>(true, windowData.TitleString);
+            var windowTitle = windowData.TitleString + ": 组件管理";
+            window = GetWindow<KitManagementEditorWindow>(true, windowTitle);
             if (UpdateData())
             {
                 var tempfilePath = System.IO.Path.Combine(Application.temporaryCachePath, kitTempFileName);
                 if (System.IO.File.Exists(tempfilePath))
                     System.IO.File.Delete(tempfilePath);
-                System.IO.File.WriteAllText(tempfilePath, windowData.TitleString + "\n" + windowData.SubTitleString);
+                System.IO.File.WriteAllText(tempfilePath, windowTitle + "\n" + windowData.SubTitleString);
                 window.minSize = new Vector2(500, 300);
                 window.Show();
             }
