@@ -85,7 +85,6 @@ namespace KSwordKit.Editor.KitManagement
                             errorPath += configPath + "\n";
                             Debug.LogError(e.Message);
                         }
-
                     }
                 });
                 if (!string.IsNullOrEmpty(errorPath))
