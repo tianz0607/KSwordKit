@@ -33,6 +33,7 @@ namespace KSwordKit.Editor.KitManagement
         const string newConfigFileSettings = "输入新组件内的文件设置";
         static string kitUserInputNewConfigFileSettings = newConfigFileSettings;
         const string kitTempFileName = "kswordkit.tempfile";
+        const string kitNewConfigTempFileName = "kswordkit.newconfig.tempfile";
         static string kitUserSelectedComponentSrcPath = "";
         const string kitUserSelectedComponentClassification_Basic = "Basic";
         const string kitUserSelectedComponentClassification_Framework = "Framework";
@@ -53,8 +54,9 @@ namespace KSwordKit.Editor.KitManagement
             if (System.IO.File.Exists(tempfilePath))
                 System.IO.File.Delete(tempfilePath);
             System.IO.File.WriteAllText(tempfilePath, windowTitle + "\n" + windowData.SubTitleString);
-            window.minSize = new Vector2(600, 500);
+            window.minSize = new Vector2(1000, 500);
             newConfig = new KitConfig();
+            newConfig.Dependencies = new List<string>();
             newConfig.FileSettings = new List<KitConfigFileSetting>();
             window.Show();
         }
@@ -73,6 +75,11 @@ namespace KSwordKit.Editor.KitManagement
                 }
                 return;
             }
+            drawGUI();
+        }
+
+        void drawGUI()
+        {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.TextField("", EditorStyles.boldLabel, GUILayout.Height(5));
             EditorGUILayout.EndHorizontal();
@@ -149,6 +156,7 @@ namespace KSwordKit.Editor.KitManagement
                         {
                             var config = JsonUtility.FromJson<KitConfig>(System.IO.File.ReadAllText(componentPath, System.Text.Encoding.UTF8));
                             kitUserInputNewConfigDependencies = config.Name + "@" + config.Version + ";";
+                            newConfig.Dependencies.Add(config.Name + "@" + config.Version);
                         }
                         catch (System.Exception e)
                         {
@@ -176,13 +184,69 @@ namespace KSwordKit.Editor.KitManagement
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             EditorGUILayout.LabelField("新组件的文件设置：", GUILayout.Height(20), GUILayout.Width(150));
+            EditorGUILayout.BeginVertical();
+            for (var i = 0; i < newConfig.FileSettings.Count; i++)
+            {
+                var file = newConfig.FileSettings[i];
+
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("源文件位置: ", GUILayout.Height(20), GUILayout.Width(120));
+                EditorGUILayout.LabelField(file.SourcePath, GUILayout.Height(20));
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("安装位置: ", GUILayout.Height(20), GUILayout.Width(120));
+                EditorGUILayout.LabelField(file.DestPath, GUILayout.Height(20));
+                if (GUILayout.Button("删除第" + i + "项", GUILayout.Width(100), GUILayout.Height(20)))
+                {
+                    newConfig.FileSettings.RemoveAt(i);
+                    Debug.Log("已删除第" + i + "项！");
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.EndVertical();
+
+            if (GUILayout.Button("<< 添加一个", GUILayout.Width(90), GUILayout.Height(40)))
+            {
+                KitManagementEditorMakeNewWindowAddFileSettingWindow.Open("添加新组件文件设置项", (newFileSetting) => {
+
+                    var find = false;
+                    for (var j = 0; j < newConfig.FileSettings.Count; j++)
+                    {
+                        var _file = newConfig.FileSettings[j];
+                        if (_file.SourcePath == newFileSetting.SourcePath && _file.DestPath == newFileSetting.DestPath)
+                        {
+                            find = true;
+                            break;
+                        }
+                    }
+                    if (!find)
+                        newConfig.FileSettings.Add(newFileSetting);
+                });
+            }
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
 
-            if (newConfig.FileSettings.Count == 0)
+            GUILayout.Space(20);
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("完成", GUILayout.Width(window.position.size.x - 5), GUILayout.Height(50)))
             {
-
+                newConfig.Name = kitUserInputNewConfigName;
+                newConfig.Author = kitUserInputNewConfigAuthor;
+                newConfig.Classification = kitUserSelectedComponentClassification;
+                newConfig.Contact = kitUserInputNewConfigContact;
+                newConfig.Date = new System.DateTime().ToString("yyyy-MM-dd");
+                newConfig.HomePage = kitUserInputNewConfigHomePage;
+                newConfig.Version = kitUserInputNewConfigVersion;
+                newConfig.Description = kitUserInputNewConfigDescription;
+                done();
             }
+            EditorGUILayout.EndHorizontal();
+            GUILayout.Space(10);
+        }
+
+        void done()
+        {
+
         }
     }
 }
