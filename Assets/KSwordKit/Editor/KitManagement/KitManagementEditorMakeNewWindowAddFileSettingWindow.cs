@@ -12,7 +12,7 @@ namespace KSwordKit.Editor.KitManagement
         static System.Action<KitConfigFileSetting> fileSettingAction;
         static string kitUserSelectedComponentSrcPath = "";
         static string kitUserSelectedComponentSrcPath2 = "";
-        const string newFileSettingInstallPath = "输入刚刚选中的文件指定的安装位置";
+        const string newFileSettingInstallPath = "请给选中的文件指定输入一个安装位置";
         static string kitUserInputNewFileSettingInstallPath = newFileSettingInstallPath;
         const string kitTempFileName = "kswordkit.tempfile.addFileSetting.temp";
 

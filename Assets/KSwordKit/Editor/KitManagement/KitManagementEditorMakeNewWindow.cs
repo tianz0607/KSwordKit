@@ -77,8 +77,42 @@ namespace KSwordKit.Editor.KitManagement
             }
             drawGUI();
         }
-
         void drawGUI()
+        {
+            // 绘制标题
+            drawTitle("填写新组件各项配置值");
+            // 绘制新组件源码位置
+            kitUserSelectedComponentSrcPath = drawUserSelectedComponentSrcPath();
+            // 绘制新组件名称
+            kitUserInputNewConfigName = drawUserInputNewConfigName();
+            // 绘制新组建作者
+            kitUserInputNewConfigAuthor = drawUserInputNewConfigAuthor();
+            // 绘制作者联系方式
+            kitUserInputNewConfigContact = drawUserInputNewConfigContact();
+            // 绘制作者主页
+            kitUserInputNewConfigHomePage = drawUserInputNewConfigHomePage();
+            // 绘制新组件版本号
+            kitUserInputNewConfigVersion = drawUserInputNewConfigVersion();
+            // 绘制新组件描述信息
+            kitUserInputNewConfigDescription = drawUserInputNewConfigDescription();
+            // 绘制新组件的依赖列表
+            var dependencies = drawUserInputNewConfigDependencies();
+            if (!newConfig.Dependencies.Contains(dependencies))
+            {
+                newConfig.Dependencies.Add(dependencies);
+                if (kitUserInputNewConfigDependencies == newConfigDependencies)
+                    kitUserInputNewConfigDependencies = dependencies;
+                else
+                    kitUserInputNewConfigDependencies += dependencies;
+            }
+            // 绘制新组件分类
+            kitUserSelectedComponentClassification = drawUserSelectedComponentClassification();
+            // 绘制文件设置
+            drawFileSetting();
+            // 制作新组件制作完成按钮
+            drawDone();
+        }
+        void drawTitle(string title)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.TextField("", EditorStyles.boldLabel, GUILayout.Height(5));
@@ -86,14 +120,16 @@ namespace KSwordKit.Editor.KitManagement
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             EditorGUILayout.LabelField("");
-            EditorGUILayout.LabelField("填写新组件各项配置值", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
             EditorGUILayout.LabelField("");
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.TextField("", EditorStyles.boldLabel, GUILayout.Height(5));
             EditorGUILayout.EndHorizontal();
-
+        }
+        string drawUserSelectedComponentSrcPath()
+        {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             EditorGUILayout.LabelField("新组件源码位置: ", GUILayout.Height(20), GUILayout.Width(90));
@@ -109,37 +145,68 @@ namespace KSwordKit.Editor.KitManagement
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
 
+            return kitUserSelectedComponentSrcPath;
+        }
+        string drawUserInputNewConfigName()
+        {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             kitUserInputNewConfigName = EditorGUILayout.TextField("新组件名称：", kitUserInputNewConfigName, GUILayout.Height(20));
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
+
+            return kitUserInputNewConfigName;
+        }
+        string drawUserInputNewConfigAuthor()
+        {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             kitUserInputNewConfigAuthor = EditorGUILayout.TextField("新组件作者：", kitUserInputNewConfigAuthor, GUILayout.Height(20));
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
+
+            return kitUserInputNewConfigAuthor;
+        }
+        string drawUserInputNewConfigContact()
+        {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             kitUserInputNewConfigContact = EditorGUILayout.TextField("新组件作者的联系方式：", kitUserInputNewConfigContact, GUILayout.Height(20));
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
+            return kitUserInputNewConfigContact;
+        }
+        string drawUserInputNewConfigHomePage()
+        {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             kitUserInputNewConfigHomePage = EditorGUILayout.TextField("新组件作者的个人主页：", kitUserInputNewConfigHomePage, GUILayout.Height(20));
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
+            return kitUserInputNewConfigHomePage;
+        }
+        string drawUserInputNewConfigVersion()
+        {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             kitUserInputNewConfigVersion = EditorGUILayout.TextField("新组件版本号：", kitUserInputNewConfigVersion, GUILayout.Height(20));
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
+            return kitUserInputNewConfigVersion;
+        }
+        string drawUserInputNewConfigDescription()
+        {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             EditorGUILayout.LabelField("新组件简介：", GUILayout.Height(20), GUILayout.Width(150));
             kitUserInputNewConfigDescription = EditorGUILayout.TextArea("请输入简介", GUILayout.Height(100));
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
+            return kitUserInputNewConfigDescription;
+        }
+        string drawUserInputNewConfigDependencies()
+        {
+            var d = "";
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             EditorGUILayout.LabelField("新组件的依赖列表：", GUILayout.Height(20), GUILayout.Width(150));
@@ -155,8 +222,7 @@ namespace KSwordKit.Editor.KitManagement
                         try
                         {
                             var config = JsonUtility.FromJson<KitConfig>(System.IO.File.ReadAllText(componentPath, System.Text.Encoding.UTF8));
-                            kitUserInputNewConfigDependencies = config.Name + "@" + config.Version + ";";
-                            newConfig.Dependencies.Add(config.Name + "@" + config.Version);
+                            d = config.Name + "@" + config.Version;
                         }
                         catch (System.Exception e)
                         {
@@ -172,7 +238,10 @@ namespace KSwordKit.Editor.KitManagement
             }
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
-
+            return d;
+        }
+        string drawUserSelectedComponentClassification()
+        {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             EditorGUILayout.LabelField("新组件的分类：", GUILayout.Height(20), GUILayout.Width(150));
@@ -180,7 +249,10 @@ namespace KSwordKit.Editor.KitManagement
             kitUserSelectedComponentClassification = componentClassificationEnum == ComponentClassificationEnum.Basic ? kitUserSelectedComponentClassification_Basic : kitUserSelectedComponentClassification_Framework;
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
-
+            return kitUserSelectedComponentClassification;
+        }
+        void drawFileSetting()
+        {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             EditorGUILayout.LabelField("新组件的文件设置：", GUILayout.Height(20), GUILayout.Width(150));
@@ -225,28 +297,115 @@ namespace KSwordKit.Editor.KitManagement
             }
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
-
+        }
+        void drawDone()
+        {
             GUILayout.Space(20);
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("完成", GUILayout.Width(window.position.size.x - 5), GUILayout.Height(50)))
             {
                 newConfig.Name = kitUserInputNewConfigName;
                 newConfig.Author = kitUserInputNewConfigAuthor;
-                newConfig.Classification = kitUserSelectedComponentClassification;
                 newConfig.Contact = kitUserInputNewConfigContact;
-                newConfig.Date = new System.DateTime().ToString("yyyy-MM-dd");
                 newConfig.HomePage = kitUserInputNewConfigHomePage;
                 newConfig.Version = kitUserInputNewConfigVersion;
+                newConfig.Date = new System.DateTime().ToString("yyyy-MM-dd");
                 newConfig.Description = kitUserInputNewConfigDescription;
-                done();
+                newConfig.DisplayedName = newConfig.Name + "@" + newConfig.Version;
+                newConfig.Classification = kitUserSelectedComponentClassification;
+
+                try
+                {
+                    var configJson = JsonUtility.ToJson(newConfig, true);
+                    var temp_config_filePath = System.IO.Path.Combine(Application.temporaryCachePath, kitNewConfigTempFileName);
+                    if (System.IO.File.Exists(temp_config_filePath))
+                        System.IO.File.Delete(temp_config_filePath);
+                    System.IO.File.WriteAllText(temp_config_filePath, configJson);
+                    commit(temp_config_filePath);
+
+                    EditorUtility.DisplayDialog(windowData.TitleString,"新组件制作成功！\n已导出到KSwordKit组件库中", "ok", "关闭");
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogWarning(windowData.TitleString + ": 该组件配置文件json数据写入失败！");
+                    Debug.LogWarning(e.Message);
+                }
+
+
             }
             EditorGUILayout.EndHorizontal();
             GUILayout.Space(10);
         }
-
-        void done()
+        // 提交新组件制作操作
+        void commit(string json_file_path)
         {
+            var exportNewComponentPath = System.IO.Path.Combine(windowData.KitLocalResourceRootDirectory, newConfig.Classification);
+            exportNewComponentPath = System.IO.Path.Combine(exportNewComponentPath, newConfig.DisplayedName);
+            DirectoryDelete(exportNewComponentPath);
+            DirectoryCopy(kitUserSelectedComponentSrcPath, exportNewComponentPath, true);
+            var config_file_path = System.IO.Path.Combine(exportNewComponentPath, windowData.KitConfigFileName);
+            if (!System.IO.File.Exists(config_file_path))
+                System.IO.File.Copy(json_file_path, config_file_path);
+        }
+        /// <summary>
+        /// 拷贝文件夹
+        /// </summary>
+        /// <param name="sourceDir">源文件夹</param>
+        /// <param name="destDir">目标文件夹</param>
+        /// <param name="copySubDirs">是否递归拷贝子目录</param>
+        void DirectoryCopy(string sourceDir, string destDir, bool copySubDirs = true)
+        {
+            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(sourceDir);
+            if (!dir.Exists)
+            {
+                throw new System.IO.DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDir);
+            }
 
+            System.IO.DirectoryInfo[] dirs = dir.GetDirectories();
+            System.IO.Directory.CreateDirectory(destDir);
+            System.IO.FileInfo[] files = dir.GetFiles();
+            foreach (System.IO.FileInfo file in files)
+            {
+                string tempPath = System.IO.Path.Combine(destDir, file.Name);
+                file.CopyTo(tempPath, true);
+            }
+
+            if (copySubDirs)
+            {
+                foreach (System.IO.DirectoryInfo subdir in dirs)
+                {
+                    string tempPath = System.IO.Path.Combine(destDir, subdir.Name);
+                    DirectoryCopy(subdir.FullName, tempPath, copySubDirs);
+                }
+            }
+        }
+        /// <summary>
+        /// 删除目录
+        /// </summary>
+        /// <param name="dir">要删除的目录</param>
+        void DirectoryDelete(string dir)
+        {
+            if (System.IO.Directory.Exists(dir))
+                System.IO.Directory.Delete(dir, true);
+            if (System.IO.Directory.Exists(dir))
+                System.IO.Directory.Delete(dir);
+            var dirMetaFilePath = dir + ".meta";
+            if (System.IO.File.Exists(dirMetaFilePath))
+                System.IO.File.Delete(dirMetaFilePath);
+        }
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="file">要删除的文件路径</param>
+        void FileDelete(string file)
+        {
+            if (System.IO.File.Exists(file))
+                System.IO.File.Delete(file);
+            var fileMetaPath = file + ".meta";
+            if (System.IO.File.Exists(fileMetaPath))
+                System.IO.File.Delete(fileMetaPath);
         }
     }
 }
