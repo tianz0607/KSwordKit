@@ -47,7 +47,7 @@ namespace KSwordKit.Editor.KitManagement
                 if (System.IO.File.Exists(tempfilePath))
                     System.IO.File.Delete(tempfilePath);
                 System.IO.File.WriteAllText(tempfilePath, windowTitle + "\n" + windowData.SubTitleString);
-                window.minSize = new Vector2(500, 300);
+                window.minSize = new Vector2(600, 400);
                 window.Show();
             }
         }
@@ -124,10 +124,11 @@ namespace KSwordKit.Editor.KitManagement
                 }
             }
         }
-        /// <summary>
-        /// 窗口GUI更新时触发
-        /// </summary>
-        private void OnGUI()
+
+        /// <summary> 
+        /// 窗口更新多次调用
+        /// </summary> 
+        private void Update()
         {
             if (window == null || windowData == null)
             {
@@ -143,7 +144,16 @@ namespace KSwordKit.Editor.KitManagement
                 }
                 return;
             }
+        }
 
+        /// <summary>
+        /// 窗口GUI更新时触发
+        /// </summary>
+        private void OnGUI()
+        {
+            if (window == null || windowData == null)
+                return;
+             
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             kitUserSearchInputString = EditorGUILayout.TextField("所有组件：", kitUserSearchInputString, GUILayout.Height(kitSubTitleHeight));
@@ -151,10 +161,7 @@ namespace KSwordKit.Editor.KitManagement
             GUILayout.Space(15);
             EditorGUILayout.EndHorizontal();
 
-            var contentHeigth = windowData.kitShouldShowConfigList.Count * kitItemViewHeight + kitSubTitleHeight + 30;
-            var isHeigtherThanWindow = contentHeigth > window.position.height;
-            var isNarrowerThanWindow = 440 > window.position.width;
-            scorllPos = EditorGUILayout.BeginScrollView(scorllPos, false, isHeigtherThanWindow, GUILayout.Height(window.position.height - 30));
+            scorllPos = EditorGUILayout.BeginScrollView(scorllPos, false, false, GUILayout.Height(window.position.height - 30), GUILayout.Width(window.position.width));
 
             foreach (var item in windowData.kitShouldShowConfigList)
                 window.AddItemView(item);

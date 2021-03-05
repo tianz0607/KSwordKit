@@ -29,9 +29,9 @@ namespace KSwordKit.Editor.KitManagement
         public const string DeleteChild_AlreadyImport = "KSwordKit/框架管理/卸载组件 _%#D";
         public const string UninstallComponentWindowTitle = "卸载组件";
 
-        public const string MakeNew_Assets = "Assets/KSwordKit/框架管理/制作新组件";
-        public const string MakeNew = "KSwordKit/框架管理/制作新组件 _%&N";
-        public const string MakeNewWindowTitle = "制作新组件";
+        public const string MakeNew_Assets = "Assets/KSwordKit/框架管理/导出新组件";
+        public const string MakeNew = "KSwordKit/框架管理/导出新组件 _%&N";
+        public const string MakeNewWindowTitle = "导出新组件";
 
         public const string About_Assets = "Assets/KSwordKit/框架管理/关于作者";
         public const string AboutUs = "KSwordKit/框架管理/关于作者 _%&M";

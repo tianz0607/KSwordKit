@@ -28,7 +28,7 @@ namespace KSwordKit.Editor.KitManagement
             if (System.IO.File.Exists(tempfilePath))
                 System.IO.File.Delete(tempfilePath);
             System.IO.File.WriteAllText(tempfilePath, title);
-            window.minSize = new Vector2(400, 240);
+            window.minSize = new Vector2(400, 200);
             window.Show();
         }
 
@@ -70,7 +70,7 @@ namespace KSwordKit.Editor.KitManagement
             EditorGUILayout.LabelField(kitUserSelectedComponentSrcPath2, GUILayout.Height(20));
             if (GUILayout.Button(buttonName2, GUILayout.Width(120), GUILayout.Height(20)))
             {
-                kitUserSelectedComponentSrcPath2 = EditorUtility.OpenFolderPanel("选择新组件文件", Application.dataPath, "NewComponentFile");
+                kitUserSelectedComponentSrcPath2 = EditorUtility.OpenFilePanel("选择新组件文件", Application.dataPath, "");
                 kitUserSelectedComponentSrcPath = "";
             }
             EditorGUILayout.EndVertical();
@@ -79,15 +79,15 @@ namespace KSwordKit.Editor.KitManagement
 
             GUILayout.Space(10);
 
-            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginHorizontal(); 
             GUILayout.Space(10);
             kitUserInputNewFileSettingInstallPath = EditorGUILayout.TextField("设置安装位置：", kitUserInputNewFileSettingInstallPath, GUILayout.Height(20));
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
 
-            GUILayout.Space(20);
+            GUILayout.Space(30);
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("完成", GUILayout.Width(290), GUILayout.Height(40)))
+            if (GUILayout.Button("添加", GUILayout.Width(window.position.size.x - 5), GUILayout.Height(40)))
             {
                 if (fileSettingAction!= null)
                 {
