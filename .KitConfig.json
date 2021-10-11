@@ -2,7 +2,9 @@
   "Version": "v2.1.0",
   "PackageCount": 1,
   "PackageList": [
-    "ID": "Enhanced Coroutine@v1.0.0",
-    "URL": "https://raw.githubusercontent.com/keenlovelife/KSwordKit/master/Enhanced%20Coroutine%40v1.0.0.zip"
+    {
+      "ID": "Enhanced Coroutine@v1.0.0",
+      "URL": "https://raw.githubusercontent.com/keenlovelife/KSwordKit/master/Enhanced%20Coroutine%40v1.0.0.zip"
+    }
   ]
 }
