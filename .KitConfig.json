@@ -6,7 +6,19 @@
       "ID": "Enhanced Coroutine@v1.0.0",
       "Description" : "增强协程库——提供多种方便可靠的协程程序接口",
       "URL": "https://raw.githubusercontent.com/keenlovelife/KSwordKit/master/Enhanced%20Coroutine%40v1.0.0.zip",
-      "FileExtension": ".zip"
+      "Extension": ".zip"
+    },
+    {
+      "ID": "Timer@v1.0.0",
+      "Description" : "定时器库——提供简单好用的定时器接口",
+      "URL": "https://raw.githubusercontent.com/keenlovelife/KSwordKit/master/Timer%40v1.0.0.zip",
+      "Extension": ".zip"
+    },
+    {
+      "ID": "Singleton Template@v1.0.0",
+      "Description" : "单例模板库——提供方便生成单例的模板类接口",
+      "URL": "https://raw.githubusercontent.com/keenlovelife/KSwordKit/master/Singleton%20Template%40v1.0.0.zip",
+      "Extension": ".zip"
     }
   ]
 }
