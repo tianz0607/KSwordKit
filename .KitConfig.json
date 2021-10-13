@@ -1,6 +1,6 @@
 {
   "Version": "v2.1.0",
-  "PackageCount": 1,
+  "PackageCount": 3,
   "PackageList": [
     {
       "ID": "Enhanced Coroutine@v1.0.0",
